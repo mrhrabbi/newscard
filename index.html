@@ -3,225 +3,313 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NU রুটিন স্প্লিটার – বিভাগ অনুযায়ী পরীক্ষার রুটিন</title>
+<title>NU রুটিন স্প্লিটার – বিভাগ অনুযায়ী রুটিন</title>
 <style>
-:root{--bg:#f4f1ea;--ink:#1c2420;--muted:#66726b;--card:#fff;--line:#d9d4c7;--green:#006a4e;--green-ink:#fff;--red:#c8372d;--soft:#e8f0ec}
-@media(prefers-color-scheme:dark){:root{--bg:#121816;--ink:#e8eeea;--muted:#92a49b;--card:#1a2420;--line:#2c3a34;--green:#3fbf94;--green-ink:#04150e;--red:#ff7a6e;--soft:#20302a}}
+:root{--bg:#f4f1ea;--ink:#1c2420;--muted:#66726b;--card:#fff;--line:#d9d4c7;--green:#006a4e;--gi:#fff;--red:#c8372d;--soft:#e8f0ec}
+@media(prefers-color-scheme:dark){:root{--bg:#121816;--ink:#e8eeea;--muted:#92a49b;--card:#1a2420;--line:#2c3a34;--green:#3fbf94;--gi:#04150e;--red:#ff7a6e;--soft:#20302a}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;line-height:1.6;padding:20px 14px 60px}
-main{max-width:800px;margin:0 auto}
-h1{font-size:1.7rem;margin:12px 0 2px}h2{font-size:1.15rem;margin:0 0 10px}
-.sub{color:var(--muted);margin:0 0 18px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri","Noto Sans Bengali","Nirmala UI",system-ui,sans-serif;line-height:1.6;padding:20px 14px 60px}
+main{max-width:820px;margin:0 auto}h1{font-size:1.7rem;margin:12px 0 2px}h2{font-size:1.1rem;margin:0 0 8px}
+.sub,.note{color:var(--muted)}.note{font-size:.86rem;margin:8px 0 0}
 .card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:16px}
-input,select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px}
-button{font:inherit;font-weight:600;cursor:pointer;border:0;border-radius:6px;padding:9px 14px;background:var(--green);color:var(--green-ink)}
+input,textarea{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px;width:100%}
+textarea{font-family:ui-monospace,Consolas,monospace;font-size:.82rem;min-height:300px;line-height:1.45}
+button{font:inherit;font-weight:600;cursor:pointer;border:0;border-radius:6px;padding:9px 14px;background:var(--green);color:var(--gi)}
 button.g{background:transparent;color:var(--ink);border:1px solid var(--line)}
 :focus-visible{outline:3px solid var(--green);outline-offset:2px}
-#drop{border:2px dashed var(--line);border-radius:8px;padding:28px;text-align:center;cursor:pointer}
+#drop{border:2px dashed var(--line);border-radius:8px;padding:24px;text-align:center;cursor:pointer}
 #drop.on{border-color:var(--green);background:var(--soft)}
-.note{color:var(--muted);font-size:.86rem;margin-top:10px}
-.msg{padding:10px 12px;border-radius:8px;background:var(--soft);margin-top:12px}
-.msg.bad{color:var(--red)}
-table{width:100%;border-collapse:collapse}
-td,th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-td input{width:100%}
-.out{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line)}
-.out:last-child{border:0}
-.bt{display:flex;gap:8px;flex-wrap:wrap}
-[hidden]{display:none!important}
+.msg{padding:10px 12px;border-radius:8px;background:var(--soft);margin-top:12px;white-space:pre-wrap}.msg.bad{color:var(--red)}
+.bt{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.out{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid var(--line)}
+.out:last-child{border:0}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+details{margin-top:10px;color:var(--muted);font-size:.88rem}code{background:var(--soft);padding:1px 4px;border-radius:4px}
+[hidden]{display:none!important}@media(max-width:600px){.two{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <main>
 <h1>NU রুটিন স্প্লিটার</h1>
-<p class="sub">পুরো রুটিনের PDF দিন, বিভাগ অনুযায়ী আলাদা রুটিন PNG বা PDF হিসেবে নামান। ফাইল আপনার ব্রাউজারের বাইরে যায় না।</p>
+<p class="sub">পুরো পরীক্ষার রুটিনের PDF থেকে বিভাগ অনুযায়ী আলাদা রুটিন (PNG/PDF)। সবকিছু আপনার ব্রাউজারেই চলে, ফাইল কোথাও যায় না।</p>
 
 <div class="card">
- <h2>১. রুটিন PDF দিন</h2>
- <div id="drop" tabindex="0" role="button">PDF এখানে ছেড়ে দিন বা ক্লিক করে বেছে নিন</div>
+ <h2>১. রুটিন লোড করুন</h2>
+ <div id="drop" tabindex="0" role="button">রুটিনের PDF এখানে ছেড়ে দিন বা ক্লিক করুন</div>
  <input id="file" type="file" accept="application/pdf" hidden>
- <div id="status" class="msg" hidden></div>
+ <div class="bt"><button class="g" id="sample">নমুনা: ২০২৫ সালের অনার্স ১ম বর্ষ (নোটিস ৬১২৭)</button></div>
+ <div id="st" class="msg" hidden></div>
+ <p class="note">স্ক্যান করা PDF হলে OCR চলবে (প্রথমবার ভাষার ফাইল নামাতে একটু সময় লাগে)। OCR-এ ভুল হতে পারে, তাই ধাপ ২-এ মিলিয়ে নিন।</p>
 </div>
 
 <div class="card" id="s2" hidden>
- <h2>২. সাবজেক্ট কোডকে বিভাগের নাম দিন</h2>
- <p class="note" style="margin-top:0">NU-এর সাবজেক্ট কোডের প্রথম কয়েকটি সংখ্যা বিভাগ বোঝায়। কতটি সংখ্যা ধরবেন:
-  <select id="plen"><option>3</option><option selected>4</option><option>5</option></select>
-  প্রতিটি গ্রুপের পাশে নাম লিখুন (একই নাম দিলে গ্রুপ একসাথে হবে)। ফাঁকা রাখলে কোডের সংখ্যাই নাম হবে।</p>
- <table><thead><tr><th>কোডের শুরু</th><th>নমুনা কোড</th><th>বিভাগের নাম</th></tr></thead><tbody id="groups"></tbody></table>
- <div class="bt" style="margin-top:12px">
-  <button class="g" id="exp">নামের তালিকা সেভ (JSON)</button>
-  <button class="g" id="imp">সেভ করা তালিকা লোড</button>
-  <input id="impf" type="file" accept=".json" hidden>
+ <h2>২. ডেটা দেখে ঠিক করুন</h2>
+ <textarea id="txt" spellcheck="false" aria-label="রুটিনের ডেটা"></textarea>
+ <details><summary>ফরম্যাট কীভাবে কাজ করে</summary>
+  <p>প্রতি লাইনে: <code>তারিখ | N/O/B | বিভাগ | কোড নাম; কোড নাম</code><br>
+  N = নতুন সিলেবাস, O = পুরাতন, B = দুটোই। বিভাগ হিসেবে বাংলা নাম, সংক্ষেপ (<code>MK</code> মার্কেটিং, <code>AC</code> হিসাব, <code>FB</code>, <code>MG</code> ইত্যাদি), <code>ALL</code> (সব বিভাগ), বা <code>ARTS</code> / <code>SCI</code> / <code>SS</code> লেখা যায়। <code>#</code> দিয়ে শুরু হওয়া লাইন নোট। যে বিভাগের নিজের কোড (প্রথম ৪ সংখ্যা মিলে) তালিকায় থাকে সে শুধু সেটাই পায়, না থাকলে সব কোডই পায় (subsidiary পেপার)।</p></details>
+ <div class="two" style="margin-top:12px">
+  <div><label for="t1">শিরোনাম</label><input id="t1" value="জাতীয় বিশ্ববিদ্যালয় – অনার্স ১ম বর্ষ পরীক্ষা সময়সূচি"></div>
+  <div><label for="t2">উপশিরোনাম</label><input id="t2" value="প্রতিদিন দুপুর ১:৩০ টা • স্বয়ংক্রিয়ভাবে সাজানো, অফিশিয়াল নোটিসের সাথে মিলিয়ে নিন"></div>
  </div>
+ <div class="bt"><button id="split">বিভাগ অনুযায়ী ভাগ করুন</button></div>
 </div>
 
 <div class="card" id="s3" hidden>
- <h2>৩. নামান</h2>
- <div id="outs"></div>
- <div class="bt" style="margin-top:12px"><button id="all">সব বিভাগ একটি PDF-এ</button></div>
- <p class="note">অফিশিয়াল রুটিনের সঙ্গে তারিখ ও সময় মিলিয়ে নেবেন। PDF থেকে স্বয়ংক্রিয়ভাবে পড়ায় ভুল হতে পারে।</p>
+ <h2>৩. নামান</h2><div id="outs"></div>
+ <div class="bt"><button id="all">সব বিভাগ একটি PDF-এ</button></div>
 </div>
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.min.js"></script>
 <script>
 const $=id=>document.getElementById(id);
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const BN='০১২৩৪৫৬৭৮৯',toEn=s=>s.replace(/[০-৯]/g,c=>BN.indexOf(c));
+const st=(t,bad)=>{const e=$('st');e.hidden=!t;e.textContent=t||'';e.className='msg'+(bad?' bad':'')};
 
-const BN='০১২৩৪৫৬৭৮৯';
-const toEn=s=>s.replace(/[০-৯]/g,c=>BN.indexOf(c));
-const DATE=/(\d{1,2})\s*[\/\-.]\s*(\d{1,2})\s*[\/\-.]\s*(\d{4}|\d{2})/;
-const TIME=/\d{1,2}\s*[:.]\s*\d{2}\s*(?:AM|PM)?(?:\s*(?:-|–|to)\s*\d{1,2}\s*[:.]\s*\d{2}\s*(?:AM|PM)?)?/i;
-const CODE=/(?<!\d)\d{6}(?!\d)/g;
+/* ---- বিভাগ ও কোড-প্রিফিক্স ---- */
+const D={};
+'B:বাংলা:Bangla,E:ইংরেজি:English,AR:আরবি:Arabic,SK:সংস্কৃত:Sanskrit,HI:ইতিহাস:History,IHC:ইসলামের ইতিহাস ও সংস্কৃতি:Islamic_History,PH:দর্শন:Philosophy,IS:ইসলামী শিক্ষা:Islamic_Studies,LIS:গ্রন্থাগার ও তথ্য বিজ্ঞান:Library_Science,MU:সংগীত:Music,PHY:পদার্থবিজ্ঞান:Physics,CH:রসায়ন:Chemistry,BC:প্রাণ-রসায়ন:Biochemistry,BO:উদ্ভিদবিজ্ঞান:Botany,ZO:প্রাণিবিজ্ঞান:Zoology,GE:ভূগোল ও পরিবেশ:Geography,SO:মৃত্তিকাবিজ্ঞান:Soil_Science,PSY:মনোবিজ্ঞান:Psychology,HE:গার্হস্থ্য অর্থনীতি:Home_Economics,ST:পরিসংখ্যান:Statistics,MA:গণিত:Mathematics,AN:নৃ-বিজ্ঞান:Anthropology,ES:পরিবেশ বিজ্ঞান:Environmental_Science,PS:রাষ্ট্রবিজ্ঞান:Political_Science,SOC:সমাজবিজ্ঞান:Sociology,SW:সমাজকর্ম:Social_Work,EC:অর্থনীতি:Economics,MK:মার্কেটিং:Marketing,FB:ফিন্যান্স এন্ড ব্যাংকিং:Finance_Banking,AC:হিসাববিজ্ঞান:Accounting,MG:ব্যবস্থাপনা:Management'
+ .split(',').forEach(s=>{const[k,b,e]=s.split(':');D[k]=[b,e]});
+const PFX={};
+'2110B 2111E 2112AR 2113SK 2115HI 2116IHC 2117PH 2118IS 2138LIS 2145MU 2127PHY 2128CH 2129BC 2130BO 2131ZO 2132GE 2133SO 2134PSY 2135HE 2136ST 2137MA 2140AN 2144ES 2119PS 2120SOC 2121SW 2122EC 2123MK 2124FB 2125AC 2126MG'.split(' ').forEach(s=>PFX[s.slice(0,4)]=s.slice(4));
+const M={ARTS:'B,E,AR,SK,HI,IHC,PH,IS,LIS,MU',SCI:'PHY,CH,BC,BO,ZO,GE,SO,PSY,HE,ST,MA,AN,ES',SS:'PS,SOC,SW,EC'};
+const norm=s=>s.replace(/[\s\-‐–.,()\[\]\u200c\u200d]/g,'').replace(/ী/g,'ি').replace(/ূ/g,'ু');
+const NM={};Object.keys(D).forEach(k=>NM[norm(D[k][0])]=k);NM[norm('প্রাণিবিদ্যা')]='ZO';
+function toKey(t){t=t.trim();if(!t)return null;if(D[t.toUpperCase()])return t.toUpperCase();const n=norm(t);if(NM[n])return NM[n];
+ const f=Object.keys(NM).find(x=>x.length>3&&n.includes(x));return f?NM[f]:null}
 
-let entries=[],titleLines=[],names={};
-try{names=JSON.parse(localStorage.getItem('nu_names')||'{}')}catch(e){}
+/* ---- নমুনা ডেটা (নোটিস ৬১২৭) ---- */
+const SAMPLE=`# তারিখ | N/O/B | বিভাগ | কোড নাম; কোড নাম
+27/07/2026|N|ALL|211521 বাংলাদেশের ইতিহাস: ভাষা, সংস্কৃতি ও পরিচিতি (আবশ্যিক)
+27/07/2026|O|ALL|211501 স্বাধীন বাংলাদেশের অভ্যুদয়ের ইতিহাস (আবশ্যিক)
+04/08/2026|B|ALL|216601 Information and Communication Technology (ICT) (আবশ্যিক)
+10/08/2026|B|ARTS|211001;211101;211201;211301;211503;211601;211701;211801;213801;214501
+10/08/2026|B|SCI|212701;212801;212901;213001;213101;213201;213301;213401;213501;213601;213701;214001;214401
+10/08/2026|B|SS|211901;212001;212101;212201
+10/08/2026|N|MK|212301 Principles of Marketing
+10/08/2026|O|MK|212301 Introduction to Business
+10/08/2026|N|FB|212401 Principles of Finance (In English)
+10/08/2026|O|FB|212401 Principles of Accounting
+10/08/2026|N|AC|212501 Principles of Accounting (In English)
+10/08/2026|O|AC|212501 Principles of Accounting
+10/08/2026|N|MG|212601 Principles of Management
+10/08/2026|O|MG|212601 Introduction to Business
+13/08/2026|B|ARTS|211003;211103;211203;211303;211505;211603;211703;211803;213803;214503
+13/08/2026|B|SCI|212703;212803;212903;213003;213103;213203;213303;213403;213503;213603;213703;214003;214403
+13/08/2026|B|SS|211903;212003;212103;212203
+13/08/2026|N|MK|212303 Business Environment and Sustainability
+13/08/2026|O|MK|212303 Principles of Marketing
+13/08/2026|N|FB|212403 Introduction to Business
+13/08/2026|O|FB|212403 Principles of Finance
+13/08/2026|N|AC|212503 Introduction to Business
+13/08/2026|O|AC|212503 Principles of Finance
+13/08/2026|N|MG|212603 Business Environment and Sustainability
+13/08/2026|O|MG|212603 Principles of Management
+16/08/2026|B|B,E,AR,SK,HI,IHC,PH,IS,LIS|211005;211105;211205;211305;211507;211605;211705;211805;213805
+16/08/2026|B|SS|211905;212005;212105;212205
+16/08/2026|N|PHY,CH,BC,BO,ZO,GE,SO,ST,PSY,HE,MA,AN,ES|212705;212805;212905;213005;213105;213205;213305;213405;213505;213605;213705;214005;214405
+16/08/2026|O|PHY,CH,BO,GE,HE,MA,AN,ES|212705;212805;213005;213205;213505;213705;214005;214405
+16/08/2026|N|MK|212305 Introduction to Business
+16/08/2026|O|MK|212305 Financial Accounting
+16/08/2026|N|FB|212405 Business Communication (In English)
+16/08/2026|O|FB|212405 Principles of Marketing
+16/08/2026|B|AC|212505 Principles of Marketing
+16/08/2026|N|MG|212605 Introduction to Business
+16/08/2026|O|MG|212605 Principle of Accounting
+19/08/2026|N|B,E,AR,SK,HI,IHC,PH,IS,LIS,AN|211007;211107;211207;211307;211509;211607;211707;211807;213807;214007
+19/08/2026|O|B,E,AR,SK,HI,IHC,PH,IS,LIS,AN,ES|211007;211107;211207;211307;211509;211607;211707;211807;213807;214007;214407
+19/08/2026|O|MA|213707
+19/08/2026|B|SS|211907;212007;212107;212207
+19/08/2026|N|MK|212307 Business Communication
+19/08/2026|O|MK|212307 Principles of Management
+19/08/2026|N|FB|212407 Principles of Accounting (In English)
+19/08/2026|O|FB|212407 Principles of Management
+19/08/2026|N|AC|212507 Principles of Finance (In English)
+19/08/2026|O|AC|212507 Principles of Management
+19/08/2026|N|MG|212607 Business Communication (In English)
+19/08/2026|O|MG|212607 Principles of Marketing
+23/08/2026|N|AR|211711 Muslim Philosophy
+23/08/2026|O|AR,SW,HE,ES|211209;212109;213509;214409
+23/08/2026|N|B,E,SK,HI,IHC,PH,IS,SOC,GE,PSY,MU,AN|211909 Introduction to Political Science
+23/08/2026|O|B,E,SK,HI,IHC,PH,IS,LIS,SOC,GE,PSY,MU|211909 Introduction to Political Theory
+23/08/2026|B|CH,MA|212707 Physics-1 (Mechanics, Properties of Matter, Waves & Optics)
+23/08/2026|N|MK|212309 Business Mathematics (In English)
+23/08/2026|O|MK|212309 Introduction to Computer
+23/08/2026|N|FB|212409 Business Mathematics (In English)
+23/08/2026|O|FB|212409 Micro Economics
+23/08/2026|N|AC|212509 Principles of Management
+23/08/2026|O|AC|212509 Micro Economics
+23/08/2026|O|ZO|212905 Bio-chemistry-1
+23/08/2026|N|MG|212609 Business Mathematics (In English)
+23/08/2026|O|MG|212609 Micro Economics
+23/08/2026|O|PSY|215021 Introduction to Computer
+27/08/2026|N|B,PH,IS,PS,EC,PSY,GE,LIS|212109 Introduction of Social Work
+27/08/2026|O|B,E,SK,HI,IHC,PH,IS,PS,EC,PSY,GE,LIS|212111 Introduction to Social Work
+27/08/2026|N|ST,MA|212211 Bangladesh Agricultural Economics
+27/08/2026|O|ST|212211 Bangladesh Agricultural Economics
+27/08/2026|N|MK|212311 Microeconomics
+27/08/2026|N|FB|212411 Microeconomics
+27/08/2026|N|AC|212511 Microeconomics
+27/08/2026|N|MG|212611 Microeconomics
+30/08/2026|N|B,E,SK,HI,IHC,PH,IS,PS,EC,PSY,GE,LIS,SW,MU|212009 Introducing Sociology
+30/08/2026|O|B,E,SK,HI,IHC,PH,IS,PS,EC,PSY,GE,LIS|212009 Introducing Sociology
+03/09/2026|N|HE,SW|213407 Basic Physiology
+03/09/2026|N|SK|211011 বাংলা ভাষার ইতিহাস ও ব্যবহারিক বাংলা
+03/09/2026|O|HE|213507 Introduction to Human Physiology
+03/09/2026|N|E|211009 বাংলা ভাষা ও সাহিত্য
+03/09/2026|B|MA,CH|212709 Physics-11 (Heat, Thermodynamics and Radiation)
+03/09/2026|N|PSY,ES|213207 Introduction to Geography and Environment
+03/09/2026|O|PSY|213207 Introduction to Geography and Environment
+03/09/2026|O|GE|313905 Introduction to Psychology
+06/09/2026|N|HI,IHC,MA,PS,SOC,ST,GE,ES|212209 Principles of Economics
+06/09/2026|O|PS,SOC,ST,GE,AN|212209 Principles of Economics
+06/09/2026|B|PSY|211709 Introduction to Philosophy
+08/09/2026|N|BO,PSY,BC,GE|213107 Zoology-1
+08/09/2026|O|BO,PSY,BC,GE|213105 Zoology-1
+10/09/2026|B|PHY,CH,ST,GE|213711 Calculus-1
+13/09/2026|B|SO,BC,GE,ZO|213007 Botany-1
+15/09/2026|N|BO,ZO,PHY,MA,HE,SO,GE,ES|212807 Chemistry-1
+15/09/2026|O|BO,ZO,PHY,MA,SO,GE|212807 Chemistry-1
+17/09/2026|N|GE,MA,PHY,ES|213607 Fundamentals of Statistics
+17/09/2026|O|GE,MA,PHY,PSY|213607 Introduction to Statistics
+20/09/2026|B|PHY,CH,ST,GE|213709 Foundation of Mathematics
+20/09/2026|O|PSY|213709`;
 
-function status(t,bad){const s=$('status');s.hidden=!t;s.textContent=t||'';s.className='msg'+(bad?' bad':'')}
-
-async function extract(file){
- const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
- const out=[],title=[];let date='',time='',textItems=0;
- for(let p=1;p<=pdf.numPages;p++){
-  const tc=await(await pdf.getPage(p)).getTextContent();
-  const items=tc.items.filter(i=>i.str.trim()).map(i=>({s:i.str,x:i.transform[4],y:i.transform[5]}));
-  textItems+=items.length;
-  items.sort((a,b)=>b.y-a.y);
-  const lines=[];
-  for(const it of items){const l=lines[lines.length-1];if(l&&Math.abs(l.y-it.y)<=3)l.t.push(it);else lines.push({y:it.y,t:[it]})}
-  for(const l of lines){
-   l.t.sort((a,b)=>a.x-b.x);
-   let text=toEn(l.t.map(i=>i.s).join(' '));
-   const codes=text.match(CODE)||[];
-   const dm=DATE.exec(text);
-   if(dm){let y=+dm[3];if(y<100)y+=2000;date=`${dm[1].padStart(2,'0')}/${dm[2].padStart(2,'0')}/${y}`;time='';text=text.replace(DATE,' ')}
-   const tm=TIME.exec(text.replace(CODE,' '));
-   if(tm)time=tm[0].replace(/\s+/g,' ').trim().toUpperCase();
-   if(p===1&&title.length<3&&!codes.length&&!dm&&text.trim().length>8)title.push(text.trim());
-   codes.forEach(c=>out.push({code:c,date,time}));
-  }
- }
- return{out,title,textItems};
+/* ---- টেক্সট থেকে ডেটা ---- */
+function parse(txt){
+ const bl=[],bad=new Set();
+ txt.split('\n').forEach(l=>{
+  l=l.trim();if(!l||l[0]==='#')return;const p=l.split('|').map(s=>s.trim());if(p.length<4)return;
+  const m=toEn(p[0]).match(/(\d{1,2})\s*[\/\-.]\s*(\d{1,2})\s*[\/\-.]\s*(\d{2,4})/);if(!m)return;
+  let y=+m[3];if(y<100)y+=2000;const date=`${m[1].padStart(2,'0')}/${m[2].padStart(2,'0')}/${y}`;
+  let depts='ALL';
+  if(p[2].toUpperCase()!=='ALL'){depts=[];p[2].split(/[,،]/).forEach(t=>{const T=t.trim().toUpperCase();if(M[T])M[T].split(',').forEach(x=>depts.push(x));else if(t.trim()){const k=toKey(t);k?depts.push(k):bad.add(t.trim())}})}
+  const codes=p.slice(3).join('|').split(';').map(s=>s.trim().match(/^(\d{6})\s*(.*)$/)).filter(Boolean).map(m=>[m[1],m[2]]);
+  bl.push({date,syl:p[1].toUpperCase(),depts,codes});
+ });
+ return{bl,bad:[...bad]};
+}
+const ts=d=>{const[a,b,c]=d.split('/');return new Date(+c,+b-1,+a).getTime()};
+const BD=['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'];
+function deptRows(bl,k){
+ const rows={};
+ bl.forEach(({date,syl,depts,codes})=>{
+  if(depts!=='ALL'&&!depts.includes(k))return;
+  let sel=codes;if(depts!=='ALL'){const own=codes.filter(c=>PFX[c[0].slice(0,4)]===k);if(own.length)sel=own}
+  const r=rows[date]=rows[date]||{N:[],O:[]};
+  (syl==='B'?['N','O']:[syl]).forEach(s=>{if(r[s])sel.forEach(c=>{if(!r[s].some(x=>x[0]===c[0]&&x[1]===c[1]))r[s].push(c)})});
+ });
+ return rows;
 }
 
-function prefLen(){return +$('plen').value}
-function groupName(code){const p=code.slice(0,prefLen());return(names[p]||'').trim()||'বিষয় '+p}
-
-function renderGroups(){
- const n=prefLen(),m={};
- entries.forEach(e=>{const p=e.code.slice(0,n);(m[p]=m[p]||new Set()).add(e.code)});
- $('groups').innerHTML='';
- Object.keys(m).sort().forEach(p=>{
-  const tr=document.createElement('tr');
-  const sample=[...m[p]].slice(0,4).join(', ')+(m[p].size>4?' …':'');
-  tr.innerHTML=`<td><b>${p}</b></td><td>${sample}</td><td><input placeholder="যেমন: Accounting" value="${(names[p]||'').replace(/"/g,'&quot;')}"></td>`;
-  tr.querySelector('input').oninput=e=>{names[p]=e.target.value;try{localStorage.setItem('nu_names',JSON.stringify(names))}catch(x){}renderOuts()};
-  $('groups').appendChild(tr);
+/* ---- আঁকা ---- */
+const FONT='"Noto Sans Bengali","Nirmala UI","Hind Siliguri","Vrinda",Arial,sans-serif',W=1000,X={d:36,n:236,o:626},CWD=360,mc=document.createElement('canvas').getContext('2d');
+function wrap(t,w,f){mc.font=f;const o=[];let c='';t.split(' ').forEach(x=>{const s=c?c+' '+x:x;if(mc.measureText(s).width>w&&c){o.push(c);c=x}else c=s});if(c)o.push(c);return o}
+function cellL(items){const L=[];items.forEach(([c,n])=>{L.push({t:c,b:1,h:28});if(n)wrap(n,CWD,'15px '+FONT).forEach(t=>L.push({t,b:0,h:21}))});return L}
+function layout(rows){return Object.keys(rows).sort((a,b)=>ts(a)-ts(b)).map(d=>{const n=cellL(rows[d].N),o=cellL(rows[d].O),s=a=>a.reduce((x,l)=>x+l.h,0);return{d,n,o,h:Math.max(s(n),s(o),46)+20}})}
+const HH=200;
+function draw(dep,items,pg,tot,fixH){
+ const H=fixH||(HH+items.reduce((s,i)=>s+i.h,0)+50),cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
+ c.fillStyle='#fff';c.fillRect(0,0,W,H);c.fillStyle='#14231d';c.font='bold 24px '+FONT;c.fillText($('t1').value.slice(0,60),36,50);
+ c.fillStyle='#555';c.font='15px '+FONT;c.fillText($('t2').value.slice(0,110),36,78);
+ c.fillStyle='#006a4e';c.font='bold 36px '+FONT;c.fillText(dep,36,130);c.fillRect(36,144,W-72,3);
+ c.fillStyle='#e8f0ec';c.fillRect(30,158,W-60,36);c.fillStyle='#14231d';c.font='bold 17px '+FONT;
+ c.fillText('তারিখ ও বার',X.d,182);c.fillText('নতুন সিলেবাস (পত্র কোড)',X.n,182);c.fillText('পুরাতন সিলেবাস (পত্র কোড)',X.o,182);
+ let y=HH-6;
+ items.forEach(it=>{
+  const dt=new Date(ts(it.d));c.fillStyle='#14231d';c.font='bold 19px '+FONT;c.fillText(it.d,X.d,y+30);c.font='16px '+FONT;c.fillStyle='#444';c.fillText(BD[dt.getDay()],X.d,y+54);
+  [[it.n,X.n],[it.o,X.o]].forEach(([L,x])=>{let yy=y+12;if(!L.length){c.fillStyle='#999';c.font='18px '+FONT;c.fillText('—',x,y+30)}
+   L.forEach(l=>{yy+=l.h;c.fillStyle=l.b?'#14231d':'#444';c.font=(l.b?'bold 20px ':'15px ')+FONT;c.fillText(l.t,x,yy-(l.b?4:5))})});
+  y+=it.h;c.fillStyle='#b9c7bf';c.fillRect(30,y-1,W-60,1);
  });
- renderOuts();
-}
-
-function buildGroups(){
- const g={};
- entries.forEach(e=>{
-  const name=groupName(e.code);
-  const k=e.date+'|'+e.time;
-  const r=((g[name]=g[name]||{})[k]=g[name][k]||{date:e.date,time:e.time,codes:new Set()});
-  r.codes.add(e.code);
- });
- const res={};
- Object.keys(g).forEach(n=>{
-  res[n]=Object.values(g[n]).sort((a,b)=>ts(a.date)-ts(b.date)||a.time.localeCompare(b.time)).map(r=>({...r,codes:[...r.codes].sort()}));
- });
- return res;
-}
-function ts(d){if(!d)return 9e15;const[a,b,c]=d.split('/');return new Date(+c,+b-1,+a).getTime()}
-function dayOf(d){if(!d)return'';const[a,b,c]=d.split('/');return new Date(+c,+b-1,+a).toLocaleDateString('en-GB',{weekday:'long'})}
-
-function renderOuts(){
- const g=buildGroups(),box=$('outs');box.innerHTML='';
- Object.keys(g).sort().forEach(n=>{
-  const d=document.createElement('div');d.className='out';
-  d.innerHTML=`<div><b>${n.replace(/</g,'&lt;')}</b><br><span class="note">${g[n].length}টি সারি, ${new Set(g[n].flatMap(r=>r.codes)).size}টি কোড</span></div>
-  <div class="bt"><button class="g" data-k="png">PNG</button><button data-k="pdf">PDF</button></div>`;
-  d.querySelector('[data-k=png]').onclick=()=>savePNG(n,g[n]);
-  d.querySelector('[data-k=pdf]').onclick=()=>savePDF([[n,g[n]]],n);
-  box.appendChild(d);
- });
- $('all').onclick=()=>savePDF(Object.keys(g).sort().map(n=>[n,g[n]]),'all-departments');
-}
-
-/* ---------- drawing ---------- */
-const COL={d:40,day:190,t:330,c:560},W=1000,CW=400,FONT='"Hind Siliguri","Noto Sans Bengali",Arial,sans-serif';
-const mctx=document.createElement('canvas').getContext('2d');
-function wrap(text,w){mctx.font='20px '+FONT;const out=[];let cur='';text.split(', ').forEach((c,i,a)=>{const s=cur?cur+', '+c:c;if(mctx.measureText(s).width>w&&cur){out.push(cur+',');cur=c}else cur=s});if(cur)out.push(cur);return out}
-function layout(rows){return rows.map(r=>{const lines=wrap(r.codes.join(', '),CW);return{r,lines,h:Math.max(1,lines.length)*28+18}})}
-function headH(){return 40+titleLines.length*30+60+46}
-function drawPage(dept,items,pg,tot,fixedH){
- const H=fixedH||(headH()+items.reduce((s,i)=>s+i.h,0)+50);
- const cv=document.createElement('canvas');cv.width=W;cv.height=H;
- const c=cv.getContext('2d');
- c.fillStyle='#fff';c.fillRect(0,0,W,H);
- let y=48;c.fillStyle='#14231d';c.font='bold 24px '+FONT;
- titleLines.forEach(t=>{c.fillText(t.slice(0,70),40,y);y+=30});
- y+=18;c.fillStyle='#006a4e';c.font='bold 32px '+FONT;c.fillText(dept,40,y);y+=22;
- c.fillRect(40,y,W-80,3);y+=14;
- c.fillStyle='#e8f0ec';c.fillRect(30,y,W-60,36);c.fillStyle='#14231d';c.font='bold 18px '+FONT;
- [['তারিখ/Date',COL.d],['Day',COL.day],['Time',COL.t],['Subject Code',COL.c]].forEach(([t,x])=>c.fillText(t,x,y+25));
- y+=36;
- items.forEach(({r,lines,h})=>{
-  c.font='20px '+FONT;c.fillStyle='#14231d';
-  c.fillText(r.date||'-',COL.d,y+30);c.fillText(dayOf(r.date),COL.day,y+30);c.fillText(r.time||'-',COL.t,y+30);
-  lines.forEach((l,i)=>c.fillText(l,COL.c,y+30+i*28));
-  y+=h;c.fillStyle='#d9d4c7';c.fillRect(30,y-1,W-60,1);
- });
- c.fillStyle='#66726b';c.font='14px '+FONT;
- c.fillText('স্বয়ংক্রিয়ভাবে তৈরি। অফিশিয়াল রুটিনের সাথে মিলিয়ে নিন।'+(tot>1?`   পাতা ${pg}/${tot}`:''),40,H-18);
+ if(tot>1){c.fillStyle='#666';c.font='13px '+FONT;c.fillText(`পাতা ${pg}/${tot}`,W-130,H-18)}
  return cv;
 }
-function paginate(items,limit){const pages=[[]];let h=0;items.forEach(i=>{if(h+i.h>limit&&pages[pages.length-1].length){pages.push([]);h=0}pages[pages.length-1].push(i);h+=i.h});return pages}
-function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
-function savePNG(dept,rows){drawPage(dept,layout(rows),1,1).toBlob(b=>download(b,dept+'-routine.png'))}
-function savePDF(list,name){
- const{jsPDF}=window.jspdf,doc=new jsPDF({unit:'mm',format:'a4'});let first=true;
- const PH=Math.round(W*297/210);
- list.forEach(([dept,rows])=>{
-  const pages=paginate(layout(rows),PH-headH()-60);
-  pages.forEach((p,i)=>{
-   if(!first)doc.addPage();first=false;
-   const cv=drawPage(dept,p,i+1,pages.length,PH);
-   doc.addImage(cv.toDataURL('image/png'),'PNG',0,0,210,297);
-  });
- });
- doc.save(name+'-routine.pdf');
+const paginate=(it,lim)=>{const p=[[]];let h=0;it.forEach(i=>{if(h+i.h>lim&&p[p.length-1].length){p.push([]);h=0}p[p.length-1].push(i);h+=i.h});return p};
+const dl=(b,n)=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000)};
+let DATA=null;
+function savePNG(k){draw(D[k][0],layout(deptRows(DATA.bl,k)),1,1).toBlob(b=>dl(b,D[k][1]+'.png'))}
+function savePDF(keys,name){
+ const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}),PH=Math.round(W*297/210);let first=true;
+ keys.forEach(k=>{const pages=paginate(layout(deptRows(DATA.bl,k)),PH-HH-60);
+  pages.forEach((p,i)=>{if(!first)doc.addPage();first=false;doc.addImage(draw(D[k][0],p,i+1,pages.length,PH).toDataURL('image/png'),'PNG',0,0,210,297)})});
+ doc.save(name+'.pdf');
+}
+function split(){
+ DATA=parse($('txt').value);if(!DATA.bl.length){st('কোনো বৈধ লাইন পাওয়া যায়নি।',true);return}
+ const keys=Object.keys(D).filter(k=>Object.keys(deptRows(DATA.bl,k)).length>0);
+ const box=$('outs');box.innerHTML='';
+ keys.forEach(k=>{const d=document.createElement('div');d.className='out';
+  d.innerHTML=`<div><b>${D[k][0]}</b><br><span class="note">${Object.keys(deptRows(DATA.bl,k)).length}টি পরীক্ষার দিন</span></div><div class="bt" style="margin:0"><button class="g">PNG</button><button>PDF</button></div>`;
+  const[b1,b2]=d.querySelectorAll('button');b1.onclick=()=>savePNG(k);b2.onclick=()=>savePDF([k],D[k][1]);box.appendChild(d)});
+ $('all').onclick=()=>savePDF(keys,'all-departments');$('s3').hidden=false;
+ st(DATA.bad.length?'এই বিভাগের নাম চিনতে পারিনি, ধাপ ২-এ ঠিক করুন: '+DATA.bad.join(', '):`${keys.length}টি বিভাগের রুটিন তৈরি।`,!!DATA.bad.length);
 }
 
-/* ---------- upload ---------- */
-async function handle(file){
- if(!file||file.type!=='application/pdf'){status('একটি PDF ফাইল দিন।',true);return}
- status('পড়া হচ্ছে...');$('s2').hidden=$('s3').hidden=true;
+/* ---- PDF পড়া: টেক্সট থাকলে সরাসরি, না থাকলে OCR ---- */
+function toLines(ws){ws.sort((a,b)=>a.y-b.y);const L=[];ws.forEach(w=>{const l=L[L.length-1];if(l&&Math.abs(l.y-w.y)<Math.max(6,w.h*.6)){l.w.push(w);l.y=(l.y+w.y)/2}else L.push({y:w.y,h:w.h,w:[w]})});
+ return L.map(l=>({t:l.w.sort((a,b)=>a.x-b.x).map(w=>w.t).join(' '),y:l.y,h:l.h}))}
+function ruleRows(cv){
+ const c=cv.getContext('2d'),x0=Math.floor(cv.width*.06),w=Math.floor(cv.width*.08),d=c.getImageData(x0,0,w,cv.height).data,ys=[];
+ for(let y=0;y<cv.height;y++){let n=0;for(let x=0;x<w;x++){const i=(y*w+x)*4;if(d[i]*.3+d[i+1]*.59+d[i+2]*.11<120)n++}if(n/w>.7)ys.push(y)}
+ const r=[];ys.forEach(y=>{if(!r.length||y-r[r.length-1]>8)r.push(y)});return r;
+}
+const CODE=/(?<!\d)[23]\d{5}(?!\d)/g;
+function sectionText(date,subj,codes){
+ const s=subj.map(l=>l.t).join(' '),re=/(নতুন|পুরাতন|পুরোনো)\s*সিলেবাস/g,bl=[];let last=0,m;
+ while((m=re.exec(s))){bl.push({syl:m[1]==='নতুন'?'N':'O',txt:s.slice(last,m.index)});last=re.lastIndex}
+ if(!bl.length&&s.trim())bl.push({syl:'B',txt:s});
+ const g=[];let pv=null;codes.forEach(l=>{if(!pv||l.y-pv.y>l.h*2.3)g.push([]);g[g.length-1].push(l);pv=l});
+ const grp=g.map(lines=>{const it=[];lines.forEach(l=>{const cs=l.t.match(CODE)||[];if(!cs.length){if(it.length)it[it.length-1][1]+=' '+l.t;return}
+   const tail=l.t.slice(l.t.lastIndexOf(cs[cs.length-1])+6).replace(/^[\s\-–,.(]+|[\s)]+$/g,'');cs.forEach((c,i)=>it.push([c,i===cs.length-1?tail:'']))});return it});
+ const flag=bl.length!==grp.length,out=[];
+ if(flag)out.push(`# ⚠ ${date}: নাম-ব্লক ${bl.length}টি কিন্তু কোড-গ্রুপ ${grp.length}টি, নিচের লাইনগুলো মিলিয়ে নিন`);
+ bl.forEach((b,i)=>{const items=flag?grp.flat():(grp[i]||[]);if(!items.length)return;
+  const dep=/আবশ্যিক/.test(b.txt)?'ALL':b.txt.replace(/\[[^\]]*\]|\([^)]*\)/g,' ').replace(/^[\s)\]]+|[\s(\[]+$/g,'').replace(/\s+/g,' ').trim();
+  out.push(`${date}|${b.syl}|${dep}|${items.map(([c,n])=>(c+' '+n).trim()).join(';')}`)});
+ return out;
+}
+async function ocrPdf(pdf){
+ st('OCR ইঞ্জিন লোড হচ্ছে...');const wk=await Tesseract.createWorker('ben+eng');
+ let cur='',res=[];
+ for(let p=1;p<=pdf.numPages;p++){
+  st(`পাতা ${p}/${pdf.numPages} OCR হচ্ছে... (একটু সময় লাগবে)`);
+  const pg=await pdf.getPage(p),vp=pg.getViewport({scale:2.4}),cv=document.createElement('canvas');cv.width=vp.width;cv.height=vp.height;
+  await pg.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+  const rules=ruleRows(cv),{data}=await wk.recognize(cv),cols=[[],[],[]];
+  data.words.forEach(x=>{const t=toEn(x.text.trim());if(!t)return;const cx=(x.bbox.x0+x.bbox.x1)/2/cv.width;cols[cx<.165?0:cx<.635?1:2].push({t,x:x.bbox.x0,y:(x.bbox.y0+x.bbox.y1)/2,h:x.bbox.y1-x.bbox.y0})});
+  const L=cols.map(toLines);
+  for(let i=0;i<rules.length-1;i++){
+   const a=rules[i],b=rules[i+1],inn=c=>L[c].filter(l=>l.y>a&&l.y<b);
+   const dm=toEn(inn(0).map(l=>l.t).join(' ')).match(/(\d{1,2})\s*[\/\-.]\s*(\d{1,2})\s*[\/\-.]\s*(\d{4})/);
+   if(dm)cur=`${dm[1]}/${dm[2]}/${dm[3]}`;
+   if(cur)res.push(...sectionText(cur,inn(1),inn(2)));
+  }
+ }
+ await wk.terminate();return res.join('\n');
+}
+async function handle(f){
+ if(!f||f.type!=='application/pdf'){st('একটি PDF ফাইল দিন।',true);return}
  try{
-  const r=await extract(file);
-  if(!r.textItems){status('এই PDF-এ কোনো লেখা নেই, সম্ভবত স্ক্যান করা ছবি। এখনকার সংস্করণে স্ক্যান করা রুটিন পড়া যায় না।',true);return}
-  entries=r.out;titleLines=r.title;
-  if(!entries.length){status('কোনো ৬ সংখ্যার সাবজেক্ট কোড পাওয়া যায়নি। রুটিনের ফরম্যাট আলাদা হতে পারে।',true);return}
-  status(`${new Set(entries.map(e=>e.code)).size}টি আলাদা সাবজেক্ট কোড পাওয়া গেছে।`);
-  $('s2').hidden=$('s3').hidden=false;renderGroups();
- }catch(e){status('PDF পড়তে সমস্যা হয়েছে: '+e.message,true)}
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+  const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;
+  let n=0;for(let p=1;p<=Math.min(2,pdf.numPages);p++)n+=(await(await pdf.getPage(p)).getTextContent()).items.length;
+  if(n>40){st('এই PDF-এ টেক্সট আছে, কিন্তু রুটিন কাঠামো আলাদা হতে পারে। OCR দিয়েই পড়ছি...')}
+  const t=await ocrPdf(pdf);
+  $('txt').value='# OCR থেকে পাওয়া, ভুল থাকলে ঠিক করুন (⚠ চিহ্নিত লাইনগুলো বিশেষভাবে দেখুন)\n'+t;$('s2').hidden=false;$('s3').hidden=true;
+  st('OCR শেষ। নিচের ডেটা মূল PDF-এর সাথে মিলিয়ে ঠিক করে "ভাগ করুন" চাপুন।');
+ }catch(e){st('PDF পড়তে সমস্যা: '+e.message,true)}
 }
 const drop=$('drop');
-drop.onclick=()=>$('file').click();
-drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('file').click()};
+drop.onclick=()=>$('file').click();drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('file').click()};
 $('file').onchange=e=>handle(e.target.files[0]);
-['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('on')}));
-['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('on')}));
+['dragover','dragenter'].forEach(v=>drop.addEventListener(v,e=>{e.preventDefault();drop.classList.add('on')}));
+['dragleave','drop'].forEach(v=>drop.addEventListener(v,e=>{e.preventDefault();drop.classList.remove('on')}));
 drop.addEventListener('drop',e=>handle(e.dataTransfer.files[0]));
-$('plen').onchange=renderGroups;
-$('exp').onclick=()=>download(new Blob([JSON.stringify(names,null,1)],{type:'application/json'}),'nu-department-names.json');
-$('imp').onclick=()=>$('impf').click();
-$('impf').onchange=async e=>{try{names=JSON.parse(await e.target.files[0].text());localStorage.setItem('nu_names',JSON.stringify(names));renderGroups()}catch(x){status('JSON ফাইলটি পড়া যায়নি।',true)}};
+$('sample').onclick=()=>{$('txt').value=SAMPLE;$('s2').hidden=false;st('');split()};
+$('split').onclick=split;
 </script>
 </body>
 </html>
