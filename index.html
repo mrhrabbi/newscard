@@ -3,176 +3,225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NU CGPA ক্যালকুলেটর – জাতীয় বিশ্ববিদ্যালয়ের শিক্ষার্থীদের জন্য</title>
-<meta name="description" content="জাতীয় বিশ্ববিদ্যালয়ের (অনার্স) শিক্ষার্থীদের জন্য CGPA ক্যালকুলেটর, টার্গেট CGPA প্ল্যানার ও গ্রেড টেবিল।">
+<title>NU রুটিন স্প্লিটার – বিভাগ অনুযায়ী পরীক্ষার রুটিন</title>
 <style>
 :root{--bg:#f4f1ea;--ink:#1c2420;--muted:#66726b;--card:#fff;--line:#d9d4c7;--green:#006a4e;--green-ink:#fff;--red:#c8372d;--soft:#e8f0ec}
 @media(prefers-color-scheme:dark){:root{--bg:#121816;--ink:#e8eeea;--muted:#92a49b;--card:#1a2420;--line:#2c3a34;--green:#3fbf94;--green-ink:#04150e;--red:#ff7a6e;--soft:#20302a}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;line-height:1.6;padding:20px 14px 60px}
-main{max-width:760px;margin:0 auto}
-h1{font-size:1.7rem;margin:12px 0 2px}
+main{max-width:800px;margin:0 auto}
+h1{font-size:1.7rem;margin:12px 0 2px}h2{font-size:1.15rem;margin:0 0 10px}
 .sub{color:var(--muted);margin:0 0 18px}
-nav{display:flex;gap:6px;border-bottom:2px solid var(--line);margin-bottom:18px;overflow-x:auto}
-nav button{background:none;border:0;font:inherit;color:var(--muted);padding:10px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap}
-nav button[aria-selected=true]{color:var(--green);border-color:var(--green);font-weight:700}
-section[hidden]{display:none}
-.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px}
-input,select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:9px;width:100%}
-label{font-weight:600;font-size:.92rem;display:block;margin-bottom:4px}
-button.b{font:inherit;font-weight:600;cursor:pointer;border:0;border-radius:6px;padding:10px 16px;background:var(--green);color:var(--green-ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:16px}
+input,select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px}
+button{font:inherit;font-weight:600;cursor:pointer;border:0;border-radius:6px;padding:9px 14px;background:var(--green);color:var(--green-ink)}
 button.g{background:transparent;color:var(--ink);border:1px solid var(--line)}
 :focus-visible{outline:3px solid var(--green);outline-offset:2px}
-.hd,.row{display:grid;grid-template-columns:1.6fr .7fr .8fr 1fr 70px 34px;gap:8px;align-items:center}
-.hd{font-size:.82rem;color:var(--muted);padding:0 0 6px}
-.row{margin-bottom:8px}
-.gr{font-weight:700;text-align:center}
-.gr.f{color:var(--red)}
-.x{background:none;border:0;color:var(--muted);font-size:1.3rem;cursor:pointer}
-.res{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
-.stat{flex:1 1 140px;background:var(--soft);border-radius:8px;padding:12px 14px}
-.stat b{display:block;font-size:1.9rem;line-height:1.1}
-.stat span{color:var(--muted);font-size:.88rem}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-table{width:100%;border-collapse:collapse}
-td,th{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
-.note{color:var(--muted);font-size:.86rem;margin-top:14px}
-.msg{margin-top:14px;padding:12px;border-radius:8px;background:var(--soft)}
+#drop{border:2px dashed var(--line);border-radius:8px;padding:28px;text-align:center;cursor:pointer}
+#drop.on{border-color:var(--green);background:var(--soft)}
+.note{color:var(--muted);font-size:.86rem;margin-top:10px}
+.msg{padding:10px 12px;border-radius:8px;background:var(--soft);margin-top:12px}
 .msg.bad{color:var(--red)}
-@media(max-width:600px){
- .hd{display:none}
- .row{grid-template-columns:1fr 1fr 1fr;border:1px solid var(--line);border-radius:8px;padding:10px}
- .row .nm{grid-column:1/4}
- .grid2{grid-template-columns:1fr}
-}
+table{width:100%;border-collapse:collapse}
+td,th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+td input{width:100%}
+.out{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line)}
+.out:last-child{border:0}
+.bt{display:flex;gap:8px;flex-wrap:wrap}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
 <main>
-<h1>NU CGPA ক্যালকুলেটর</h1>
-<p class="sub">জাতীয় বিশ্ববিদ্যালয়ের অনার্স শিক্ষার্থীদের জন্য। ডেটা শুধু আপনার ব্রাউজারে থাকে।</p>
+<h1>NU রুটিন স্প্লিটার</h1>
+<p class="sub">পুরো রুটিনের PDF দিন, বিভাগ অনুযায়ী আলাদা রুটিন PNG বা PDF হিসেবে নামান। ফাইল আপনার ব্রাউজারের বাইরে যায় না।</p>
 
-<nav role="tablist">
- <button role="tab" aria-selected="true" data-t="calc">CGPA হিসাব</button>
- <button role="tab" aria-selected="false" data-t="plan">টার্গেট প্ল্যানার</button>
- <button role="tab" aria-selected="false" data-t="tbl">গ্রেড টেবিল</button>
-</nav>
+<div class="card">
+ <h2>১. রুটিন PDF দিন</h2>
+ <div id="drop" tabindex="0" role="button">PDF এখানে ছেড়ে দিন বা ক্লিক করে বেছে নিন</div>
+ <input id="file" type="file" accept="application/pdf" hidden>
+ <div id="status" class="msg" hidden></div>
+</div>
 
-<section id="calc">
- <div class="card">
-  <div class="hd"><span>বিষয়</span><span>ক্রেডিট</span><span>নম্বর</span><span>অথবা গ্রেড</span><span style="text-align:center">GP</span><span></span></div>
-  <div id="rows"></div>
-  <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
-   <button class="b" id="add">+ বিষয় যোগ করুন</button>
-   <button class="b g" id="clear">সব মুছুন</button>
-  </div>
-  <div class="res">
-   <div class="stat"><b id="cgpa">–</b><span>CGPA</span></div>
-   <div class="stat"><b id="tc">0</b><span>মোট ক্রেডিট</span></div>
-   <div class="stat"><b id="pass">–</b><span>অবস্থা</span></div>
-  </div>
-  <p class="note">নম্বর দিলে গ্রেড নিজে থেকে হবে। নম্বর না জানলে ডানের ড্রপডাউন থেকে গ্রেড বেছে নিন। F পেলে সেই বিষয়ের ক্রেডিট গণনায় ধরা হয়, GP ০।</p>
+<div class="card" id="s2" hidden>
+ <h2>২. সাবজেক্ট কোডকে বিভাগের নাম দিন</h2>
+ <p class="note" style="margin-top:0">NU-এর সাবজেক্ট কোডের প্রথম কয়েকটি সংখ্যা বিভাগ বোঝায়। কতটি সংখ্যা ধরবেন:
+  <select id="plen"><option>3</option><option selected>4</option><option>5</option></select>
+  প্রতিটি গ্রুপের পাশে নাম লিখুন (একই নাম দিলে গ্রুপ একসাথে হবে)। ফাঁকা রাখলে কোডের সংখ্যাই নাম হবে।</p>
+ <table><thead><tr><th>কোডের শুরু</th><th>নমুনা কোড</th><th>বিভাগের নাম</th></tr></thead><tbody id="groups"></tbody></table>
+ <div class="bt" style="margin-top:12px">
+  <button class="g" id="exp">নামের তালিকা সেভ (JSON)</button>
+  <button class="g" id="imp">সেভ করা তালিকা লোড</button>
+  <input id="impf" type="file" accept=".json" hidden>
  </div>
-</section>
+</div>
 
-<section id="plan" hidden>
- <div class="card">
-  <div class="grid2">
-   <div><label for="pc">এখন পর্যন্ত CGPA</label><input id="pc" type="number" step="0.01" min="0" max="4" placeholder="যেমন 3.20"></div>
-   <div><label for="pd">সম্পন্ন ক্রেডিট</label><input id="pd" type="number" min="0" placeholder="যেমন 70"></div>
-   <div><label for="pt">কোর্সের মোট ক্রেডিট</label><input id="pt" type="number" min="1" value="140"></div>
-   <div><label for="pg">টার্গেট CGPA</label><input id="pg" type="number" step="0.01" min="0" max="4" placeholder="যেমন 3.50"></div>
-  </div>
-  <div id="pm" class="msg" hidden></div>
-  <p class="note">অনার্স কোর্সে সাধারণত মোট ১৪০ ক্রেডিট থাকে। আপনার বিভাগের সঠিক সংখ্যা সিলেবাস দেখে বসিয়ে নিন।</p>
- </div>
-</section>
-
-<section id="tbl" hidden>
- <div class="card">
-  <table><thead><tr><th>নম্বর</th><th>লেটার গ্রেড</th><th>গ্রেড পয়েন্ট</th></tr></thead><tbody id="tb"></tbody></table>
-  <p class="note">এটি NU অনার্সে ব্যবহৃত সাধারণ ৪.০০ স্কেল। ডিগ্রি (পাস) বা মাস্টার্সের নিয়ম আলাদা হতে পারে, তাই চূড়ান্ত হিসাবের আগে NU-এর সর্বশেষ বিজ্ঞপ্তি মিলিয়ে নিন। এই টুল শুধু আনুমানিক হিসাবের জন্য, অফিশিয়াল ফলাফল নয়।</p>
- </div>
-</section>
+<div class="card" id="s3" hidden>
+ <h2>৩. নামান</h2>
+ <div id="outs"></div>
+ <div class="bt" style="margin-top:12px"><button id="all">সব বিভাগ একটি PDF-এ</button></div>
+ <p class="note">অফিশিয়াল রুটিনের সঙ্গে তারিখ ও সময় মিলিয়ে নেবেন। PDF থেকে স্বয়ংক্রিয়ভাবে পড়ায় ভুল হতে পারে।</p>
+</div>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-const G=[[80,'A+',4],[75,'A',3.75],[70,'A-',3.5],[65,'B+',3.25],[60,'B',3],[55,'B-',2.75],[50,'C+',2.5],[45,'C',2.25],[40,'D',2],[0,'F',0]];
 const $=id=>document.getElementById(id);
-const gradeOf=m=>G.find(g=>m>=g[0]);
-const byLetter=l=>G.find(g=>g[1]===l);
-let rows=[];
-try{rows=JSON.parse(localStorage.getItem('nu_rows')||'[]')}catch(e){}
-if(!rows.length)rows=[{n:'',c:4,m:'',g:''},{n:'',c:4,m:'',g:''},{n:'',c:4,m:'',g:''}];
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-function info(r){
- let g=null;
- if(r.m!==''&&!isNaN(+r.m)&&+r.m>=0&&+r.m<=100)g=gradeOf(+r.m);
- else if(r.g)g=byLetter(r.g);
- return g;
+const BN='০১২৩৪৫৬৭৮৯';
+const toEn=s=>s.replace(/[০-৯]/g,c=>BN.indexOf(c));
+const DATE=/(\d{1,2})\s*[\/\-.]\s*(\d{1,2})\s*[\/\-.]\s*(\d{4}|\d{2})/;
+const TIME=/\d{1,2}\s*[:.]\s*\d{2}\s*(?:AM|PM)?(?:\s*(?:-|–|to)\s*\d{1,2}\s*[:.]\s*\d{2}\s*(?:AM|PM)?)?/i;
+const CODE=/(?<!\d)\d{6}(?!\d)/g;
+
+let entries=[],titleLines=[],names={};
+try{names=JSON.parse(localStorage.getItem('nu_names')||'{}')}catch(e){}
+
+function status(t,bad){const s=$('status');s.hidden=!t;s.textContent=t||'';s.className='msg'+(bad?' bad':'')}
+
+async function extract(file){
+ const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+ const out=[],title=[];let date='',time='',textItems=0;
+ for(let p=1;p<=pdf.numPages;p++){
+  const tc=await(await pdf.getPage(p)).getTextContent();
+  const items=tc.items.filter(i=>i.str.trim()).map(i=>({s:i.str,x:i.transform[4],y:i.transform[5]}));
+  textItems+=items.length;
+  items.sort((a,b)=>b.y-a.y);
+  const lines=[];
+  for(const it of items){const l=lines[lines.length-1];if(l&&Math.abs(l.y-it.y)<=3)l.t.push(it);else lines.push({y:it.y,t:[it]})}
+  for(const l of lines){
+   l.t.sort((a,b)=>a.x-b.x);
+   let text=toEn(l.t.map(i=>i.s).join(' '));
+   const codes=text.match(CODE)||[];
+   const dm=DATE.exec(text);
+   if(dm){let y=+dm[3];if(y<100)y+=2000;date=`${dm[1].padStart(2,'0')}/${dm[2].padStart(2,'0')}/${y}`;time='';text=text.replace(DATE,' ')}
+   const tm=TIME.exec(text.replace(CODE,' '));
+   if(tm)time=tm[0].replace(/\s+/g,' ').trim().toUpperCase();
+   if(p===1&&title.length<3&&!codes.length&&!dm&&text.trim().length>8)title.push(text.trim());
+   codes.forEach(c=>out.push({code:c,date,time}));
+  }
+ }
+ return{out,title,textItems};
 }
-function save(){try{localStorage.setItem('nu_rows',JSON.stringify(rows))}catch(e){}}
 
-function render(){
- $('rows').innerHTML='';
- rows.forEach((r,i)=>{
-  const d=document.createElement('div');d.className='row';
-  d.innerHTML=`<input class="nm" placeholder="বিষয় (ঐচ্ছিক)" value="${r.n.replace(/"/g,'&quot;')}" aria-label="বিষয়">
-  <input type="number" min="0" step="0.5" value="${r.c}" aria-label="ক্রেডিট">
-  <input type="number" min="0" max="100" value="${r.m}" placeholder="0-100" aria-label="নম্বর">
-  <select aria-label="গ্রেড"><option value="">গ্রেড</option>${G.map(g=>`<option ${r.g===g[1]?'selected':''}>${g[1]}</option>`).join('')}</select>
-  <div class="gr" id="gr${i}"></div>
-  <button class="x" aria-label="বিষয় মুছুন">×</button>`;
-  const [n,c,m,s]=d.querySelectorAll('input,select');
-  n.oninput=()=>{r.n=n.value;save()};
-  c.oninput=()=>{r.c=c.value;upd()};
-  m.oninput=()=>{r.m=m.value;upd()};
-  s.onchange=()=>{r.g=s.value;upd()};
-  d.querySelector('.x').onclick=()=>{rows.splice(i,1);render()};
-  $('rows').appendChild(d);
+function prefLen(){return +$('plen').value}
+function groupName(code){const p=code.slice(0,prefLen());return(names[p]||'').trim()||'বিষয় '+p}
+
+function renderGroups(){
+ const n=prefLen(),m={};
+ entries.forEach(e=>{const p=e.code.slice(0,n);(m[p]=m[p]||new Set()).add(e.code)});
+ $('groups').innerHTML='';
+ Object.keys(m).sort().forEach(p=>{
+  const tr=document.createElement('tr');
+  const sample=[...m[p]].slice(0,4).join(', ')+(m[p].size>4?' …':'');
+  tr.innerHTML=`<td><b>${p}</b></td><td>${sample}</td><td><input placeholder="যেমন: Accounting" value="${(names[p]||'').replace(/"/g,'&quot;')}"></td>`;
+  tr.querySelector('input').oninput=e=>{names[p]=e.target.value;try{localStorage.setItem('nu_names',JSON.stringify(names))}catch(x){}renderOuts()};
+  $('groups').appendChild(tr);
  });
- upd();
+ renderOuts();
 }
-function upd(){
- let tc=0,tp=0,fail=false;
- rows.forEach((r,i)=>{
-  const g=info(r),el=$('gr'+i),c=parseFloat(r.c);
-  if(el){el.textContent=g?g[2].toFixed(2):'–';el.className='gr'+(g&&g[1]==='F'?' f':'')}
-  if(g&&c>0){tc+=c;tp+=c*g[2];if(g[1]==='F')fail=true}
+
+function buildGroups(){
+ const g={};
+ entries.forEach(e=>{
+  const name=groupName(e.code);
+  const k=e.date+'|'+e.time;
+  const r=((g[name]=g[name]||{})[k]=g[name][k]||{date:e.date,time:e.time,codes:new Set()});
+  r.codes.add(e.code);
  });
- $('tc').textContent=tc;
- $('cgpa').textContent=tc?(tp/tc).toFixed(2):'–';
- const p=$('pass');
- if(!tc){p.textContent='–'}
- else if(fail){p.textContent='F আছে'}
- else if(tp/tc<2){p.textContent='CGPA < 2.00'}
- else p.textContent='উত্তীর্ণ';
- save();
+ const res={};
+ Object.keys(g).forEach(n=>{
+  res[n]=Object.values(g[n]).sort((a,b)=>ts(a.date)-ts(b.date)||a.time.localeCompare(b.time)).map(r=>({...r,codes:[...r.codes].sort()}));
+ });
+ return res;
 }
-$('add').onclick=()=>{rows.push({n:'',c:4,m:'',g:''});render()};
-$('clear').onclick=()=>{if(confirm('সব বিষয় মুছে ফেলবেন?')){rows=[{n:'',c:4,m:'',g:''}];render()}};
+function ts(d){if(!d)return 9e15;const[a,b,c]=d.split('/');return new Date(+c,+b-1,+a).getTime()}
+function dayOf(d){if(!d)return'';const[a,b,c]=d.split('/');return new Date(+c,+b-1,+a).toLocaleDateString('en-GB',{weekday:'long'})}
 
-function plan(){
- const c=parseFloat($('pc').value),d=parseFloat($('pd').value),t=parseFloat($('pt').value),g=parseFloat($('pg').value),m=$('pm');
- if([c,d,t,g].some(isNaN)){m.hidden=true;return}
- m.hidden=false;m.className='msg';
- const left=t-d;
- if(left<=0){m.textContent='সব ক্রেডিট শেষ, CGPA আর বদলাবে না।';return}
- const need=(g*t-c*d)/left;
- if(need>4){m.className='msg bad';m.textContent=`বাকি ${left} ক্রেডিটে সব A+ পেলেও ${g.toFixed(2)} CGPA ছোঁয়া সম্ভব নয়। সর্বোচ্চ সম্ভব: ${((c*d+4*left)/t).toFixed(2)}।`;return}
- if(need<=0){m.textContent=`ভালো খবর: বাকি সব বিষয়ে ০ পেলেও ${g.toFixed(2)} CGPA ধরে রাখা যাবে।`;return}
- const gr=G.slice().reverse().find(x=>x[2]>=need)||G[0];
- m.textContent=`বাকি ${left} ক্রেডিটে গড় GPA লাগবে ${need.toFixed(2)}। অর্থাৎ গড়ে প্রায় ${gr[1]} (${gr[0]}+ নম্বর)।`;
+function renderOuts(){
+ const g=buildGroups(),box=$('outs');box.innerHTML='';
+ Object.keys(g).sort().forEach(n=>{
+  const d=document.createElement('div');d.className='out';
+  d.innerHTML=`<div><b>${n.replace(/</g,'&lt;')}</b><br><span class="note">${g[n].length}টি সারি, ${new Set(g[n].flatMap(r=>r.codes)).size}টি কোড</span></div>
+  <div class="bt"><button class="g" data-k="png">PNG</button><button data-k="pdf">PDF</button></div>`;
+  d.querySelector('[data-k=png]').onclick=()=>savePNG(n,g[n]);
+  d.querySelector('[data-k=pdf]').onclick=()=>savePDF([[n,g[n]]],n);
+  box.appendChild(d);
+ });
+ $('all').onclick=()=>savePDF(Object.keys(g).sort().map(n=>[n,g[n]]),'all-departments');
 }
-['pc','pd','pt','pg'].forEach(id=>$(id).oninput=plan);
 
-$('tb').innerHTML=G.map((g,i)=>`<tr><td>${g[0]}${i?'–'+(G[i-1][0]-1):'–100'}</td><td>${g[1]}</td><td>${g[2].toFixed(2)}</td></tr>`).join('').replace('0–39','0–39').replace('80–100','80–100');
+/* ---------- drawing ---------- */
+const COL={d:40,day:190,t:330,c:560},W=1000,CW=400,FONT='"Hind Siliguri","Noto Sans Bengali",Arial,sans-serif';
+const mctx=document.createElement('canvas').getContext('2d');
+function wrap(text,w){mctx.font='20px '+FONT;const out=[];let cur='';text.split(', ').forEach((c,i,a)=>{const s=cur?cur+', '+c:c;if(mctx.measureText(s).width>w&&cur){out.push(cur+',');cur=c}else cur=s});if(cur)out.push(cur);return out}
+function layout(rows){return rows.map(r=>{const lines=wrap(r.codes.join(', '),CW);return{r,lines,h:Math.max(1,lines.length)*28+18}})}
+function headH(){return 40+titleLines.length*30+60+46}
+function drawPage(dept,items,pg,tot,fixedH){
+ const H=fixedH||(headH()+items.reduce((s,i)=>s+i.h,0)+50);
+ const cv=document.createElement('canvas');cv.width=W;cv.height=H;
+ const c=cv.getContext('2d');
+ c.fillStyle='#fff';c.fillRect(0,0,W,H);
+ let y=48;c.fillStyle='#14231d';c.font='bold 24px '+FONT;
+ titleLines.forEach(t=>{c.fillText(t.slice(0,70),40,y);y+=30});
+ y+=18;c.fillStyle='#006a4e';c.font='bold 32px '+FONT;c.fillText(dept,40,y);y+=22;
+ c.fillRect(40,y,W-80,3);y+=14;
+ c.fillStyle='#e8f0ec';c.fillRect(30,y,W-60,36);c.fillStyle='#14231d';c.font='bold 18px '+FONT;
+ [['তারিখ/Date',COL.d],['Day',COL.day],['Time',COL.t],['Subject Code',COL.c]].forEach(([t,x])=>c.fillText(t,x,y+25));
+ y+=36;
+ items.forEach(({r,lines,h})=>{
+  c.font='20px '+FONT;c.fillStyle='#14231d';
+  c.fillText(r.date||'-',COL.d,y+30);c.fillText(dayOf(r.date),COL.day,y+30);c.fillText(r.time||'-',COL.t,y+30);
+  lines.forEach((l,i)=>c.fillText(l,COL.c,y+30+i*28));
+  y+=h;c.fillStyle='#d9d4c7';c.fillRect(30,y-1,W-60,1);
+ });
+ c.fillStyle='#66726b';c.font='14px '+FONT;
+ c.fillText('স্বয়ংক্রিয়ভাবে তৈরি। অফিশিয়াল রুটিনের সাথে মিলিয়ে নিন।'+(tot>1?`   পাতা ${pg}/${tot}`:''),40,H-18);
+ return cv;
+}
+function paginate(items,limit){const pages=[[]];let h=0;items.forEach(i=>{if(h+i.h>limit&&pages[pages.length-1].length){pages.push([]);h=0}pages[pages.length-1].push(i);h+=i.h});return pages}
+function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+function savePNG(dept,rows){drawPage(dept,layout(rows),1,1).toBlob(b=>download(b,dept+'-routine.png'))}
+function savePDF(list,name){
+ const{jsPDF}=window.jspdf,doc=new jsPDF({unit:'mm',format:'a4'});let first=true;
+ const PH=Math.round(W*297/210);
+ list.forEach(([dept,rows])=>{
+  const pages=paginate(layout(rows),PH-headH()-60);
+  pages.forEach((p,i)=>{
+   if(!first)doc.addPage();first=false;
+   const cv=drawPage(dept,p,i+1,pages.length,PH);
+   doc.addImage(cv.toDataURL('image/png'),'PNG',0,0,210,297);
+  });
+ });
+ doc.save(name+'-routine.pdf');
+}
 
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
- document.querySelectorAll('nav button').forEach(x=>x.setAttribute('aria-selected',x===b));
- ['calc','plan','tbl'].forEach(id=>$(id).hidden=id!==b.dataset.t);
-});
-render();
+/* ---------- upload ---------- */
+async function handle(file){
+ if(!file||file.type!=='application/pdf'){status('একটি PDF ফাইল দিন।',true);return}
+ status('পড়া হচ্ছে...');$('s2').hidden=$('s3').hidden=true;
+ try{
+  const r=await extract(file);
+  if(!r.textItems){status('এই PDF-এ কোনো লেখা নেই, সম্ভবত স্ক্যান করা ছবি। এখনকার সংস্করণে স্ক্যান করা রুটিন পড়া যায় না।',true);return}
+  entries=r.out;titleLines=r.title;
+  if(!entries.length){status('কোনো ৬ সংখ্যার সাবজেক্ট কোড পাওয়া যায়নি। রুটিনের ফরম্যাট আলাদা হতে পারে।',true);return}
+  status(`${new Set(entries.map(e=>e.code)).size}টি আলাদা সাবজেক্ট কোড পাওয়া গেছে।`);
+  $('s2').hidden=$('s3').hidden=false;renderGroups();
+ }catch(e){status('PDF পড়তে সমস্যা হয়েছে: '+e.message,true)}
+}
+const drop=$('drop');
+drop.onclick=()=>$('file').click();
+drop.onkeydown=e=>{if(e.key==='Enter'||e.key===' ')$('file').click()};
+$('file').onchange=e=>handle(e.target.files[0]);
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('on')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('on')}));
+drop.addEventListener('drop',e=>handle(e.dataTransfer.files[0]));
+$('plen').onchange=renderGroups;
+$('exp').onclick=()=>download(new Blob([JSON.stringify(names,null,1)],{type:'application/json'}),'nu-department-names.json');
+$('imp').onclick=()=>$('impf').click();
+$('impf').onchange=async e=>{try{names=JSON.parse(await e.target.files[0].text());localStorage.setItem('nu_names',JSON.stringify(names));renderGroups()}catch(x){status('JSON ফাইলটি পড়া যায়নি।',true)}};
 </script>
 </body>
 </html>
