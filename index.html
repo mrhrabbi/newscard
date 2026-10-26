@@ -1,225 +1,177 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>নিউজ কার্ড মেকার</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@500;800&family=Hind+Siliguri:wght@400;600;700&family=Noto+Serif+Bengali:wght@500;800&family=Baloo+Da+2:wght@500;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<title>NU CGPA ক্যালকুলেটর – জাতীয় বিশ্ববিদ্যালয়ের শিক্ষার্থীদের জন্য</title>
+<meta name="description" content="জাতীয় বিশ্ববিদ্যালয়ের (অনার্স) শিক্ষার্থীদের জন্য CGPA ক্যালকুলেটর, টার্গেট CGPA প্ল্যানার ও গ্রেড টেবিল।">
 <style>
-:root{--bg:#f4f5f7;--panel:#fff;--ink:#16181d;--mut:#6b7280;--line:#e2e5ea;--pri:#d7192d}
-@media(prefers-color-scheme:dark){:root{--bg:#0f1115;--panel:#181b21;--ink:#eceef2;--mut:#9aa1ad;--line:#2a2f38}}
+:root{--bg:#f4f1ea;--ink:#1c2420;--muted:#66726b;--card:#fff;--line:#d9d4c7;--green:#006a4e;--green-ink:#fff;--red:#c8372d;--soft:#e8f0ec}
+@media(prefers-color-scheme:dark){:root{--bg:#121816;--ink:#e8eeea;--muted:#92a49b;--card:#1a2420;--line:#2c3a34;--green:#3fbf94;--green-ink:#04150e;--red:#ff7a6e;--soft:#20302a}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind Siliguri',system-ui,sans-serif}
-.app{display:grid;grid-template-columns:360px 1fr;min-height:100vh}
-aside{background:var(--panel);border-right:1px solid var(--line);padding:16px;overflow-y:auto;max-height:100vh;position:sticky;top:0}
-h1{font-size:18px;margin:0 0 12px}
-label{display:block;font-size:12px;color:var(--mut);margin:10px 0 4px}
-input,textarea,select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:14px}
-textarea{resize:vertical;min-height:64px}
-input[type=color]{padding:2px;height:36px}
-input[type=range]{padding:0}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.tpls{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.tpls button{padding:8px 0;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;cursor:pointer;font:inherit;font-size:12px}
-.tpls button.on{border-color:var(--pri);background:var(--pri);color:#fff}
-.dl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
-.dl button{padding:11px;border:0;border-radius:8px;background:var(--pri);color:#fff;font:inherit;font-weight:600;cursor:pointer}
-.dl button.alt{background:var(--ink);color:var(--bg)}
-main{display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
-#wrap{box-shadow:0 8px 30px rgba(0,0,0,.25)}
-#stage{transform-origin:top left}
-@media(max-width:860px){.app{grid-template-columns:1fr}aside{position:static;max-height:none}}
-
-/* ===== CARD ===== */
-.card{position:relative;overflow:hidden;font-family:var(--font);color:#fff;background:#111}
-.card *{margin:0;box-sizing:border-box}
-.ph{position:absolute;inset:0;overflow:hidden;background:#333}
-.ph img{width:100%;height:100%;object-fit:cover;transform-origin:center;display:block}
-.ph.empty::after{content:"ছবি যোগ করুন";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;color:#ffffff66}
-.brand{position:absolute;z-index:5;display:flex;align-items:center;gap:14px}
-.brand img{height:84px;max-width:380px;object-fit:contain}
-.brand b{font-size:44px;font-weight:800;background:var(--accent);color:#fff;padding:8px 24px;border-radius:6px;line-height:1.2}
-.tag{display:inline-block;background:var(--accent);color:#fff;font-weight:700;font-size:36px;padding:6px 22px;border-radius:6px}
-.hl{font-size:var(--fs);font-weight:800;line-height:1.28;color:var(--txt)}
-.sub{font-size:calc(var(--fs)*.46);line-height:1.45;opacity:.92;margin-top:18px}
-.meta{font-size:30px;font-weight:600;display:flex;justify-content:space-between;gap:20px;opacity:.95}
-.abs{position:absolute;left:0;right:0}
-
-/* t1 classic */
-.t1 .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(0,0,0,.88))}
-.t1 .brand{top:48px;left:48px}
-.t1 .body{bottom:110px;padding:0 56px;z-index:4}
-.t1 .tag{margin-bottom:22px}
-.t1 .bar{bottom:0;height:78px;background:var(--accent);padding:0 56px;display:flex;align-items:center;z-index:4}
-/* t2 split */
-.t2{background:#fff}
-.t2 .ph{inset:0 0 auto 0;height:56%}
-.t2 .brand{top:40px;left:40px}
-.t2 .body{top:56%;bottom:0;background:#fff;border-top:14px solid var(--accent);padding:34px 56px 100px;z-index:3}
-.t2 .hl,.t2 .sub{color:#15171c}
-.t2 .tag{position:absolute;top:-56px;left:56px;font-size:32px}
-.t2 .bar{bottom:0;padding:0 56px 34px;color:#555;z-index:4}
-/* t3 quote */
-.t3{background:var(--accent)}
-.t3 .ph{inset:90px auto auto 50%;width:380px;height:380px;border-radius:50%;transform:translateX(-50%);border:12px solid #fff}
-.t3 .brand{top:36px;left:0;right:0;justify-content:center}
-.t3 .body{top:520px;padding:0 70px;text-align:center}
-.t3 .body::before{content:"“";display:block;font-size:150px;line-height:.6;height:70px;opacity:.7}
-.t3 .sub{font-weight:700;font-size:38px;margin-top:26px}
-.t3 .bar{bottom:30px;padding:0 56px}
-/* t4 breaking */
-.t4 .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(0,0,0,.7))}
-.t4 .brand{top:48px;right:48px}
-.t4 .tag{position:absolute;left:0;bottom:calc(var(--fs)*3.1 + 190px);border-radius:0 8px 8px 0;font-size:44px;padding:10px 34px 10px 48px;z-index:6;background:#e11d2e}
-.t4 .body{bottom:96px;left:0;right:56px;background:rgba(0,0,0,.82);border-left:20px solid var(--accent);padding:30px 40px;z-index:5}
-.t4 .bar{bottom:0;height:80px;padding:0 56px;display:flex;align-items:center;z-index:4}
-/* t5 solid */
-.t5{background:var(--accent)}
-.t5 .ph{display:none}
-.t5 .brand{top:50px;left:56px}
-.t5 .body{top:50%;transform:translateY(-50%);padding:0 70px;text-align:center}
-.t5 .tag{background:#fff;color:var(--accent);margin-bottom:34px}
-.t5 .bar{bottom:44px;padding:0 56px}
-/* t6 dark */
-.t6{background:#0b0c0f}
-.t6 .ph{inset:48px 48px auto 48px;height:50%;border-radius:22px}
-.t6 .brand{top:80px;left:80px}
-.t6 .body{top:calc(50% + 90px);padding:0 56px}
-.t6 .hl{border-bottom:8px solid var(--accent);padding-bottom:26px;display:inline-block}
-.t6 .tag{margin-bottom:22px}
-.t6 .bar{bottom:36px;padding:0 56px}
-/* t7 diagonal */
-.t7 .brand{top:48px;left:48px}
-.t7 .body{bottom:0;left:0;right:0;height:50%;background:var(--accent);clip-path:polygon(0 18%,100% 0,100% 100%,0 100%);padding:calc(18% + 24px) 56px 100px;z-index:3;display:flex;flex-direction:column;justify-content:center}
-.t7 .tag{background:#fff;color:var(--accent);align-self:flex-start;margin-bottom:20px}
-.t7 .bar{bottom:0;padding:0 56px 34px;z-index:4}
-/* t8 frame */
-.t8{background:#fff}
-.t8 .ph{inset:36px 36px 36px 36px}
-.t8 .brand{top:70px;left:70px}
-.t8 .body{bottom:70px;left:70px;right:70px;background:var(--accent);padding:36px 44px;z-index:4}
-.t8 .tag{background:#fff;color:var(--accent);position:absolute;top:-30px;left:36px;font-size:30px}
-.t8 .bar{display:none}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Hind Siliguri","Noto Sans Bengali",system-ui,sans-serif;line-height:1.6;padding:20px 14px 60px}
+main{max-width:760px;margin:0 auto}
+h1{font-size:1.7rem;margin:12px 0 2px}
+.sub{color:var(--muted);margin:0 0 18px}
+nav{display:flex;gap:6px;border-bottom:2px solid var(--line);margin-bottom:18px;overflow-x:auto}
+nav button{background:none;border:0;font:inherit;color:var(--muted);padding:10px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap}
+nav button[aria-selected=true]{color:var(--green);border-color:var(--green);font-weight:700}
+section[hidden]{display:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px}
+input,select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:9px;width:100%}
+label{font-weight:600;font-size:.92rem;display:block;margin-bottom:4px}
+button.b{font:inherit;font-weight:600;cursor:pointer;border:0;border-radius:6px;padding:10px 16px;background:var(--green);color:var(--green-ink)}
+button.g{background:transparent;color:var(--ink);border:1px solid var(--line)}
+:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.hd,.row{display:grid;grid-template-columns:1.6fr .7fr .8fr 1fr 70px 34px;gap:8px;align-items:center}
+.hd{font-size:.82rem;color:var(--muted);padding:0 0 6px}
+.row{margin-bottom:8px}
+.gr{font-weight:700;text-align:center}
+.gr.f{color:var(--red)}
+.x{background:none;border:0;color:var(--muted);font-size:1.3rem;cursor:pointer}
+.res{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.stat{flex:1 1 140px;background:var(--soft);border-radius:8px;padding:12px 14px}
+.stat b{display:block;font-size:1.9rem;line-height:1.1}
+.stat span{color:var(--muted);font-size:.88rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+table{width:100%;border-collapse:collapse}
+td,th{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+.note{color:var(--muted);font-size:.86rem;margin-top:14px}
+.msg{margin-top:14px;padding:12px;border-radius:8px;background:var(--soft)}
+.msg.bad{color:var(--red)}
+@media(max-width:600px){
+ .hd{display:none}
+ .row{grid-template-columns:1fr 1fr 1fr;border:1px solid var(--line);border-radius:8px;padding:10px}
+ .row .nm{grid-column:1/4}
+ .grid2{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="app">
-<aside>
-  <h1>📰 নিউজ কার্ড মেকার</h1>
-  <label>টেমপ্লেট</label>
-  <div class="tpls" id="tpls"></div>
+<main>
+<h1>NU CGPA ক্যালকুলেটর</h1>
+<p class="sub">জাতীয় বিশ্ববিদ্যালয়ের অনার্স শিক্ষার্থীদের জন্য। ডেটা শুধু আপনার ব্রাউজারে থাকে।</p>
 
-  <label>সাইজ</label>
-  <select id="size">
-    <option value="1080x1080">স্কয়ার ১০৮০×১০৮০ (Facebook/Instagram)</option>
-    <option value="1080x1350">পোর্ট্রেট ১০৮০×১৩৫০</option>
-    <option value="1200x630">ল্যান্ডস্কেপ ১২০০×৬৩০ (Link share)</option>
-    <option value="1080x1920">স্টোরি ১০৮০×১৯২০</option>
-  </select>
+<nav role="tablist">
+ <button role="tab" aria-selected="true" data-t="calc">CGPA হিসাব</button>
+ <button role="tab" aria-selected="false" data-t="plan">টার্গেট প্ল্যানার</button>
+ <button role="tab" aria-selected="false" data-t="tbl">গ্রেড টেবিল</button>
+</nav>
 
-  <label>শিরোনাম</label>
-  <textarea id="hl">এখানে আপনার সংবাদের শিরোনাম লিখুন</textarea>
-  <label>উপশিরোনাম / বক্তার নাম (ঐচ্ছিক)</label>
-  <textarea id="sub"></textarea>
-  <div class="row">
-    <div><label>ট্যাগ</label><input id="tag" value="ব্রেকিং নিউজ"></div>
-    <div><label>তারিখ</label><input id="date"></div>
+<section id="calc">
+ <div class="card">
+  <div class="hd"><span>বিষয়</span><span>ক্রেডিট</span><span>নম্বর</span><span>অথবা গ্রেড</span><span style="text-align:center">GP</span><span></span></div>
+  <div id="rows"></div>
+  <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap">
+   <button class="b" id="add">+ বিষয় যোগ করুন</button>
+   <button class="b g" id="clear">সব মুছুন</button>
   </div>
-  <div class="row">
-    <div><label>ব্র্যান্ডের নাম</label><input id="brand" value="আপনার পোর্টাল"></div>
-    <div><label>সূত্র / ওয়েবসাইট</label><input id="src" value="www.example.com"></div>
+  <div class="res">
+   <div class="stat"><b id="cgpa">–</b><span>CGPA</span></div>
+   <div class="stat"><b id="tc">0</b><span>মোট ক্রেডিট</span></div>
+   <div class="stat"><b id="pass">–</b><span>অবস্থা</span></div>
   </div>
-  <div class="row">
-    <div><label>ছবি আপলোড</label><input type="file" id="img" accept="image/*"></div>
-    <div><label>লোগো আপলোড</label><input type="file" id="logo" accept="image/*"></div>
+  <p class="note">নম্বর দিলে গ্রেড নিজে থেকে হবে। নম্বর না জানলে ডানের ড্রপডাউন থেকে গ্রেড বেছে নিন। F পেলে সেই বিষয়ের ক্রেডিট গণনায় ধরা হয়, GP ০।</p>
+ </div>
+</section>
+
+<section id="plan" hidden>
+ <div class="card">
+  <div class="grid2">
+   <div><label for="pc">এখন পর্যন্ত CGPA</label><input id="pc" type="number" step="0.01" min="0" max="4" placeholder="যেমন 3.20"></div>
+   <div><label for="pd">সম্পন্ন ক্রেডিট</label><input id="pd" type="number" min="0" placeholder="যেমন 70"></div>
+   <div><label for="pt">কোর্সের মোট ক্রেডিট</label><input id="pt" type="number" min="1" value="140"></div>
+   <div><label for="pg">টার্গেট CGPA</label><input id="pg" type="number" step="0.01" min="0" max="4" placeholder="যেমন 3.50"></div>
   </div>
-  <div class="row">
-    <div><label>ছবি জুম</label><input type="range" id="zoom" min="100" max="250" value="100"></div>
-    <div><label>ছবি X অবস্থান</label><input type="range" id="px" min="-50" max="50" value="0"></div>
-  </div>
-  <label>ছবি Y অবস্থান</label><input type="range" id="py" min="-50" max="50" value="0">
-  <div class="row">
-    <div><label>অ্যাকসেন্ট রঙ</label><input type="color" id="accent" value="#d7192d"></div>
-    <div><label>লেখার রঙ</label><input type="color" id="txt" value="#ffffff"></div>
-  </div>
-  <div class="row">
-    <div><label>ফন্ট</label>
-      <select id="font">
-        <option value="'Hind Siliguri'">হিন্দ শিলিগুড়ি</option>
-        <option value="'Anek Bangla'">অনেক বাংলা</option>
-        <option value="'Noto Serif Bengali'">নোটো সেরিফ</option>
-        <option value="'Baloo Da 2'">বালু দা</option>
-      </select></div>
-    <div><label>শিরোনাম সাইজ</label><input type="range" id="fs" min="36" max="110" value="64"></div>
-  </div>
-  <div class="dl">
-    <button id="png">⬇ PNG</button>
-    <button id="pdf" class="alt">⬇ PDF</button>
-  </div>
-  <p style="font-size:11px;color:var(--mut);margin-top:12px">নিজের ব্র্যান্ড ও লোগো ব্যবহার করুন। অন্য কোনো সংবাদমাধ্যমের নাম/লোগো দিয়ে ভুয়া কার্ড বানাবেন না।</p>
-</aside>
-<main><div id="wrap"><div id="stage"><div class="card" id="card"></div></div></div></main>
-</div>
+  <div id="pm" class="msg" hidden></div>
+  <p class="note">অনার্স কোর্সে সাধারণত মোট ১৪০ ক্রেডিট থাকে। আপনার বিভাগের সঠিক সংখ্যা সিলেবাস দেখে বসিয়ে নিন।</p>
+ </div>
+</section>
+
+<section id="tbl" hidden>
+ <div class="card">
+  <table><thead><tr><th>নম্বর</th><th>লেটার গ্রেড</th><th>গ্রেড পয়েন্ট</th></tr></thead><tbody id="tb"></tbody></table>
+  <p class="note">এটি NU অনার্সে ব্যবহৃত সাধারণ ৪.০০ স্কেল। ডিগ্রি (পাস) বা মাস্টার্সের নিয়ম আলাদা হতে পারে, তাই চূড়ান্ত হিসাবের আগে NU-এর সর্বশেষ বিজ্ঞপ্তি মিলিয়ে নিন। এই টুল শুধু আনুমানিক হিসাবের জন্য, অফিশিয়াল ফলাফল নয়।</p>
+ </div>
+</section>
+</main>
 
 <script>
+const G=[[80,'A+',4],[75,'A',3.75],[70,'A-',3.5],[65,'B+',3.25],[60,'B',3],[55,'B-',2.75],[50,'C+',2.5],[45,'C',2.25],[40,'D',2],[0,'F',0]];
 const $=id=>document.getElementById(id);
-const TPL=[["১ ক্লাসিক","t1"],["২ স্প্লিট","t2"],["৩ কোট","t3"],["৪ ব্রেকিং","t4"],["৫ সলিড","t5"],["৬ ডার্ক","t6"],["৭ ডায়াগনাল","t7"],["৮ ফ্রেম","t8"]];
-let cur="t1",imgSrc="",logoSrc="";
-const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])).replace(/\n/g,'<br>');
-$('date').value=new Date().toLocaleDateString('bn-BD',{day:'numeric',month:'long',year:'numeric'});
-TPL.forEach(([n,k])=>{const b=document.createElement('button');b.textContent=n;b.dataset.k=k;b.onclick=()=>{cur=k;render()};$('tpls').appendChild(b)});
+const gradeOf=m=>G.find(g=>m>=g[0]);
+const byLetter=l=>G.find(g=>g[1]===l);
+let rows=[];
+try{rows=JSON.parse(localStorage.getItem('nu_rows')||'[]')}catch(e){}
+if(!rows.length)rows=[{n:'',c:4,m:'',g:''},{n:'',c:4,m:'',g:''},{n:'',c:4,m:'',g:''}];
+
+function info(r){
+ let g=null;
+ if(r.m!==''&&!isNaN(+r.m)&&+r.m>=0&&+r.m<=100)g=gradeOf(+r.m);
+ else if(r.g)g=byLetter(r.g);
+ return g;
+}
+function save(){try{localStorage.setItem('nu_rows',JSON.stringify(rows))}catch(e){}}
 
 function render(){
-  const [W,H]=$('size').value.split('x').map(Number);
-  const c=$('card');
-  c.className='card '+cur;
-  c.style.cssText=`width:${W}px;height:${H}px;--accent:${$('accent').value};--txt:${$('txt').value};--font:${$('font').value},sans-serif;--fs:${$('fs').value}px`;
-  const z=$('zoom').value/100,x=$('px').value,y=$('py').value;
-  const brand=logoSrc?`<img src="${logoSrc}">`:`<b>${esc($('brand').value)}</b>`;
-  const sub=$('sub').value.trim();
-  const tag=$('tag').value.trim();
-  c.innerHTML=`
-   <div class="ph ${imgSrc?'':'empty'}">${imgSrc?`<img src="${imgSrc}" style="transform:translate(${x}%,${y}%) scale(${z})">`:''}</div>
-   <div class="brand">${brand}</div>
-   <div class="body abs">${tag?`<span class="tag">${esc(tag)}</span>`:''}<div class="hl">${esc($('hl').value)}</div>${sub?`<div class="sub">${esc(sub)}</div>`:''}</div>
-   <div class="bar abs meta"><span>${esc($('date').value)}</span><span>${esc($('src').value)}</span></div>`;
-  document.querySelectorAll('.tpls button').forEach(b=>b.classList.toggle('on',b.dataset.k===cur));
-  fit(W,H);
+ $('rows').innerHTML='';
+ rows.forEach((r,i)=>{
+  const d=document.createElement('div');d.className='row';
+  d.innerHTML=`<input class="nm" placeholder="বিষয় (ঐচ্ছিক)" value="${r.n.replace(/"/g,'&quot;')}" aria-label="বিষয়">
+  <input type="number" min="0" step="0.5" value="${r.c}" aria-label="ক্রেডিট">
+  <input type="number" min="0" max="100" value="${r.m}" placeholder="0-100" aria-label="নম্বর">
+  <select aria-label="গ্রেড"><option value="">গ্রেড</option>${G.map(g=>`<option ${r.g===g[1]?'selected':''}>${g[1]}</option>`).join('')}</select>
+  <div class="gr" id="gr${i}"></div>
+  <button class="x" aria-label="বিষয় মুছুন">×</button>`;
+  const [n,c,m,s]=d.querySelectorAll('input,select');
+  n.oninput=()=>{r.n=n.value;save()};
+  c.oninput=()=>{r.c=c.value;upd()};
+  m.oninput=()=>{r.m=m.value;upd()};
+  s.onchange=()=>{r.g=s.value;upd()};
+  d.querySelector('.x').onclick=()=>{rows.splice(i,1);render()};
+  $('rows').appendChild(d);
+ });
+ upd();
 }
-function fit(W,H){
-  const m=document.querySelector('main');
-  const s=Math.min((m.clientWidth-40)/W,(window.innerHeight-60)/H,1);
-  const k=Math.max(s,.2);
-  $('stage').style.transform=`scale(${k})`;
-  $('wrap').style.width=W*k+'px';$('wrap').style.height=H*k+'px';
+function upd(){
+ let tc=0,tp=0,fail=false;
+ rows.forEach((r,i)=>{
+  const g=info(r),el=$('gr'+i),c=parseFloat(r.c);
+  if(el){el.textContent=g?g[2].toFixed(2):'–';el.className='gr'+(g&&g[1]==='F'?' f':'')}
+  if(g&&c>0){tc+=c;tp+=c*g[2];if(g[1]==='F')fail=true}
+ });
+ $('tc').textContent=tc;
+ $('cgpa').textContent=tc?(tp/tc).toFixed(2):'–';
+ const p=$('pass');
+ if(!tc){p.textContent='–'}
+ else if(fail){p.textContent='F আছে'}
+ else if(tp/tc<2){p.textContent='CGPA < 2.00'}
+ else p.textContent='উত্তীর্ণ';
+ save();
 }
-function readFile(f,cb){if(!f)return;const r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(f)}
-$('img').onchange=e=>readFile(e.target.files[0],d=>{imgSrc=d;render()});
-$('logo').onchange=e=>readFile(e.target.files[0],d=>{logoSrc=d;render()});
-document.querySelectorAll('aside input:not([type=file]),aside textarea,aside select').forEach(el=>el.addEventListener('input',render));
-window.addEventListener('resize',render);
+$('add').onclick=()=>{rows.push({n:'',c:4,m:'',g:''});render()};
+$('clear').onclick=()=>{if(confirm('সব বিষয় মুছে ফেলবেন?')){rows=[{n:'',c:4,m:'',g:''}];render()}};
 
-async function snap(){
-  await document.fonts.ready;
-  const [W,H]=$('size').value.split('x').map(Number);
-  return html2canvas($('card'),{scale:2,useCORS:true,width:W,height:H,backgroundColor:null,
-    onclone:d=>{d.getElementById('stage').style.transform='none'}});
+function plan(){
+ const c=parseFloat($('pc').value),d=parseFloat($('pd').value),t=parseFloat($('pt').value),g=parseFloat($('pg').value),m=$('pm');
+ if([c,d,t,g].some(isNaN)){m.hidden=true;return}
+ m.hidden=false;m.className='msg';
+ const left=t-d;
+ if(left<=0){m.textContent='সব ক্রেডিট শেষ, CGPA আর বদলাবে না।';return}
+ const need=(g*t-c*d)/left;
+ if(need>4){m.className='msg bad';m.textContent=`বাকি ${left} ক্রেডিটে সব A+ পেলেও ${g.toFixed(2)} CGPA ছোঁয়া সম্ভব নয়। সর্বোচ্চ সম্ভব: ${((c*d+4*left)/t).toFixed(2)}।`;return}
+ if(need<=0){m.textContent=`ভালো খবর: বাকি সব বিষয়ে ০ পেলেও ${g.toFixed(2)} CGPA ধরে রাখা যাবে।`;return}
+ const gr=G.slice().reverse().find(x=>x[2]>=need)||G[0];
+ m.textContent=`বাকি ${left} ক্রেডিটে গড় GPA লাগবে ${need.toFixed(2)}। অর্থাৎ গড়ে প্রায় ${gr[1]} (${gr[0]}+ নম্বর)।`;
 }
-const stamp=()=>'news-card-'+Date.now();
-$('png').onclick=async()=>{
-  const cv=await snap();const a=document.createElement('a');
-  a.href=cv.toDataURL('image/png');a.download=stamp()+'.png';a.click();
-};
-$('pdf').onclick=async()=>{
-  const cv=await snap();const [W,H]=$('size').value.split('x').map(Number);
-  const {jsPDF}=window.jspdf;
-  const pdf=new jsPDF({unit:'px',format:[W,H],orientation:W>H?'l':'p',hotfixes:['px_scaling']});
-  pdf.addImage(cv.toDataURL('image/png'),'PNG',0,0,W,H);
-  pdf.save(stamp()+'.pdf');
-};
+['pc','pd','pt','pg'].forEach(id=>$(id).oninput=plan);
+
+$('tb').innerHTML=G.map((g,i)=>`<tr><td>${g[0]}${i?'–'+(G[i-1][0]-1):'–100'}</td><td>${g[1]}</td><td>${g[2].toFixed(2)}</td></tr>`).join('').replace('0–39','0–39').replace('80–100','80–100');
+
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.setAttribute('aria-selected',x===b));
+ ['calc','plan','tbl'].forEach(id=>$(id).hidden=id!==b.dataset.t);
+});
 render();
 </script>
 </body>
