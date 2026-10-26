@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zen Sequence — Mind Game</title>
+<meta name="theme-color" content="#0f1226">
+<style>
+  :root{
+    --bg1:#0f1226; --bg2:#1b1f45; --card:rgba(255,255,255,.07); --line:rgba(255,255,255,.14);
+    --text:#eef0ff; --muted:#a6abd6; --accent:#8ea2ff;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;margin:0}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    color:var(--text);
+    background:radial-gradient(1200px 800px at 20% -10%,#2a2f6b 0%,transparent 60%),
+               radial-gradient(900px 700px at 110% 110%,#3a1f5e 0%,transparent 55%),
+               linear-gradient(160deg,var(--bg1),var(--bg2));
+    display:flex;align-items:center;justify-content:center;padding:16px;
+    overflow-x:hidden;
+  }
+  .app{width:100%;max-width:440px;display:flex;flex-direction:column;gap:14px}
+  header{text-align:center}
+  h1{margin:0;font-size:1.6rem;font-weight:700;letter-spacing:.5px}
+  h1 span{background:linear-gradient(90deg,#8ea2ff,#ff9ad5);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);font-size:.9rem;margin-top:4px}
+  .tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);padding:5px;border-radius:14px;backdrop-filter:blur(10px)}
+  .tab{flex:1;border:0;background:transparent;color:var(--muted);padding:10px;border-radius:10px;font-size:.95rem;cursor:pointer;transition:.2s}
+  .tab.active{background:rgba(142,162,255,.22);color:var(--text)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;backdrop-filter:blur(14px);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  .stats{display:flex;justify-content:space-between;margin-bottom:14px;font-size:.9rem;color:var(--muted)}
+  .stats b{color:var(--text);font-size:1.1rem}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;aspect-ratio:1/1}
+  .orb{
+    border:0;border-radius:50%;cursor:pointer;position:relative;
+    background:radial-gradient(circle at 35% 30%,hsla(var(--h),85%,75%,.55),hsla(var(--h),70%,45%,.35) 70%);
+    box-shadow:inset 0 0 0 1px hsla(var(--h),90%,85%,.25);
+    transition:transform .15s, box-shadow .25s, filter .25s;
+  }
+  .orb:active{transform:scale(.96)}
+  .orb.lit{
+    filter:brightness(1.7) saturate(1.2);
+    transform:scale(1.07);
+    box-shadow:0 0 36px 8px hsla(var(--h),95%,70%,.7), inset 0 0 0 1px #fff8;
+  }
+  .grid.locked .orb{cursor:default}
+  .msg{min-height:1.5em;text-align:center;margin-top:14px;color:var(--text);font-size:1rem}
+  .row{display:flex;gap:10px;margin-top:12px}
+  .btn{flex:1;border:0;padding:13px;border-radius:14px;font-size:1rem;font-weight:600;cursor:pointer;color:#10122b;
+       background:linear-gradient(90deg,#8ea2ff,#b69bff);transition:.2s}
+  .btn:hover{filter:brightness(1.08)}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+  .modes{display:flex;gap:8px;margin-bottom:12px}
+  .chip{flex:1;text-align:center;padding:9px;border-radius:12px;border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:.88rem;background:transparent}
+  .chip.active{color:var(--text);border-color:var(--accent);background:rgba(142,162,255,.15)}
+  .shake{animation:shake .4s}
+  @keyframes shake{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+  /* breathe */
+  .breathe{display:flex;flex-direction:column;align-items:center;gap:22px;padding:18px 0 8px}
+  .bwrap{width:240px;height:240px;display:flex;align-items:center;justify-content:center;position:relative}
+  .bcircle{
+    width:120px;height:120px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#bfe3ff,#7f8cff 70%);
+    box-shadow:0 0 60px 10px rgba(127,140,255,.45);
+    transition:transform 4s ease-in-out;
+  }
+  .bring{position:absolute;inset:0;border-radius:50%;border:1px dashed var(--line)}
+  .btext{font-size:1.3rem;letter-spacing:1px;min-height:1.6em}
+  .hidden{display:none}
+  footer{text-align:center;color:var(--muted);font-size:.78rem}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1><span>Zen</span> Sequence</h1>
+    <div class="sub">Mon dao, sequence mone rakho, abar bajao</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="game">🧠 Memory</button>
+    <button class="tab" data-tab="breathe">🌿 Breathe</button>
+  </div>
+
+  <!-- GAME -->
+  <section id="game" class="panel">
+    <div class="modes">
+      <button class="chip active" data-mode="relax">🌙 Relax (tension chhara)</button>
+      <button class="chip" data-mode="focus">🎯 Focus (3 lives)</button>
+    </div>
+    <div class="stats">
+      <div>Level <b id="lvl">1</b></div>
+      <div id="livesBox" class="hidden">Lives <b id="lives">3</b></div>
+      <div>Best <b id="best">0</b></div>
+    </div>
+    <div class="grid locked" id="grid"></div>
+    <div class="msg" id="msg">Start chap, shuru koro</div>
+    <div class="row">
+      <button class="btn" id="startBtn">Start</button>
+      <button class="btn ghost" id="soundBtn">🔊 Sound on</button>
+    </div>
+  </section>
+
+  <!-- BREATHE -->
+  <section id="breathe" class="panel hidden">
+    <div class="breathe">
+      <div class="bwrap"><div class="bring"></div><div class="bcircle" id="bcircle"></div></div>
+      <div class="btext" id="btext">Ready?</div>
+      <div class="row" style="width:100%">
+        <button class="btn" id="bBtn">Shuru koro</button>
+      </div>
+      <div class="sub" style="text-align:center">4s shash nao · 4s dhore rakho · 6s chharo<br>Pronayam er moto, mon shant hobe.</div>
+    </div>
+  </section>
+
+  <footer>Made for calm focus · works offline after load</footer>
+</div>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const grid = $('#grid'), msg = $('#msg');
+  // C major pentatonic across 9 orbs
+  const freqs = [261.63,293.66,329.63,392.00,440.00,523.25,587.33,659.25,783.99];
+  const hues  = [210,235,260,285,310,335,15,160,185];
+  let actx = null, soundOn = true, mode = 'relax';
+  let seq = [], pos = 0, level = 1, lives = 3, busy = true, running = false, runId = 0;
+  const bestKey = m => 'zen-best-' + m;
+  const getBest = () => +(localStorage.getItem(bestKey(mode)) || 0);
+  const setBest = v => { try { localStorage.setItem(bestKey(mode), v) } catch(e){} };
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  function tone(f, dur = .45, type = 'sine', vol = .22){
+    if(!soundOn) return;
+    try{
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      if(actx.state === 'suspended') actx.resume();
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type = type; o.frequency.value = f;
+      const t = actx.currentTime;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(vol, t + .03);
+      g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+      o.connect(g).connect(actx.destination);
+      o.start(t); o.stop(t + dur + .05);
+    }catch(e){}
+  }
+
+  // build orbs
+  const orbs = freqs.map((f,i) => {
+    const b = document.createElement('button');
+    b.className = 'orb'; b.style.setProperty('--h', hues[i]);
+    b.setAttribute('aria-label', 'Orb ' + (i+1));
+    b.addEventListener('pointerdown', e => { e.preventDefault(); press(i); });
+    grid.appendChild(b); return b;
+  });
+
+  async function flash(i, ms = 380){
+    orbs[i].classList.add('lit'); tone(freqs[i]);
+    await sleep(ms);
+    orbs[i].classList.remove('lit');
+  }
+
+  function ui(){
+    $('#lvl').textContent = level;
+    $('#lives').textContent = lives;
+    $('#best').textContent = getBest();
+    $('#livesBox').classList.toggle('hidden', mode !== 'focus');
+  }
+
+  async function playSeq(id){
+    busy = true; grid.classList.add('locked');
+    msg.textContent = 'Dekho…';
+    await sleep(600);
+    const speed = Math.max(220, 420 - level * 12);
+    for(const i of seq){
+      if(id !== runId) return;
+      await flash(i, speed);
+      await sleep(130);
+    }
+    if(id !== runId) return;
+    pos = 0; busy = false; grid.classList.remove('locked');
+    msg.textContent = 'Ebar tomar pala';
+  }
+
+  function nextRound(){
+    seq.push(Math.floor(Math.random() * 9));
+    ui(); playSeq(runId);
+  }
+
+  async function press(i){
+    if(busy || !running) return;
+    flash(i, 220);
+    if(i === seq[pos]){
+      pos++;
+      if(pos === seq.length){
+        busy = true;
+        if(level > getBest()){ setBest(level); }
+        msg.textContent = '✨ Darun! Level ' + level + ' complete';
+        level++; ui();
+        await sleep(900);
+        if(running) nextRound();
+      }
+    } else {
+      busy = true;
+      grid.classList.add('shake');
+      tone(110, .5, 'triangle', .25);
+      setTimeout(() => grid.classList.remove('shake'), 450);
+      if(mode === 'focus'){
+        lives--; ui();
+        if(lives <= 0){ return gameOver(); }
+        msg.textContent = 'Bhul! Abar dekho (' + lives + ' life baki)';
+      } else {
+        msg.textContent = 'Kono byapar na, abar dekho 🌙';
+      }
+      await sleep(1000);
+      if(running) playSeq(runId);
+    }
+  }
+
+  function gameOver(){
+    running = false; busy = true;
+    const score = level;
+    msg.textContent = 'Game over · tumi Level ' + score + ' porjonto gele 👏';
+    $('#startBtn').textContent = 'Abar khelo';
+  }
+
+  function start(){
+    runId++; running = true; seq = []; level = 1; lives = 3;
+    $('#startBtn').textContent = 'Restart';
+    ui(); nextRound();
+  }
+
+  $('#startBtn').onclick = start;
+  $('#soundBtn').onclick = e => {
+    soundOn = !soundOn;
+    e.target.textContent = soundOn ? '🔊 Sound on' : '🔇 Sound off';
+  };
+  document.querySelectorAll('.chip').forEach(c => c.onclick = () => {
+    document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+    c.classList.add('active'); mode = c.dataset.mode;
+    runId++; running = false; busy = true; seq = []; level = 1; lives = 3;
+    grid.classList.add('locked'); msg.textContent = 'Start chap, shuru koro';
+    $('#startBtn').textContent = 'Start'; ui();
+  });
+
+  // tabs
+  document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    $('#game').classList.toggle('hidden', t.dataset.tab !== 'game');
+    $('#breathe').classList.toggle('hidden', t.dataset.tab !== 'breathe');
+    if(t.dataset.tab !== 'breathe') stopBreathe();
+  });
+
+  // breathing
+  let bRun = false, bId = 0;
+  const bc = $('#bcircle'), bt = $('#btext');
+  async function breatheLoop(id){
+    while(bRun && id === bId){
+      bt.textContent = 'Shash nao…'; bc.style.transition = 'transform 4s ease-in-out'; bc.style.transform = 'scale(1.9)';
+      await sleep(4000); if(!bRun || id !== bId) return;
+      bt.textContent = 'Dhore rakho'; await sleep(4000); if(!bRun || id !== bId) return;
+      bt.textContent = 'Dhire chharo…'; bc.style.transition = 'transform 6s ease-in-out'; bc.style.transform = 'scale(1)';
+      await sleep(6000);
+    }
+  }
+  function stopBreathe(){
+    bRun = false; bId++;
+    bc.style.transition = 'transform 1s'; bc.style.transform = 'scale(1)';
+    bt.textContent = 'Ready?'; $('#bBtn').textContent = 'Shuru koro';
+  }
+  $('#bBtn').onclick = () => {
+    if(bRun){ stopBreathe(); return; }
+    bRun = true; bId++; $('#bBtn').textContent = 'Thamao'; breatheLoop(bId);
+  };
+
+  ui();
+})();
+</script>
+</body>
+</html>
